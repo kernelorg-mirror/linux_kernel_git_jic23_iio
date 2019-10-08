@@ -325,7 +325,7 @@ static struct adis_burst adis16400_burst = {
 static int adis16334_get_freq(struct adis16400_state *st)
 {
 	int ret;
-	uint16_t t;
+	uint16_t t = 0;
 
 	ret = __adis_read_reg_16(&st->adis, ADIS16400_SMPL_PRD, &t);
 	if (ret < 0)
@@ -338,7 +338,7 @@ static int adis16334_get_freq(struct adis16400_state *st)
 
 static int adis16334_set_freq(struct adis16400_state *st, unsigned int freq)
 {
-	unsigned int t;
+	unsigned int t = 0;
 
 	if (freq < 819200)
 		t = ilog2(819200 / freq);
@@ -357,7 +357,7 @@ static int adis16334_set_freq(struct adis16400_state *st, unsigned int freq)
 static int adis16400_get_freq(struct adis16400_state *st)
 {
 	int sps, ret;
-	uint16_t t;
+	uint16_t t = 0;
 
 	ret = __adis_read_reg_16(&st->adis, ADIS16400_SMPL_PRD, &t);
 	if (ret < 0)
@@ -408,7 +408,7 @@ static const unsigned int adis16400_3db_divisors[] = {
 static int __adis16400_set_filter(struct iio_dev *indio_dev, int sps, int val)
 {
 	struct adis16400_state *st = iio_priv(indio_dev);
-	uint16_t val16;
+	uint16_t val16 = 0;
 	int i, ret;
 
 	for (i = ARRAY_SIZE(adis16400_3db_divisors) - 1; i >= 1; i--) {
@@ -554,7 +554,7 @@ static int adis16400_read_raw(struct iio_dev *indio_dev,
 {
 	struct adis16400_state *st = iio_priv(indio_dev);
 	struct mutex *slock = &st->adis.state_lock;
-	int16_t val16;
+	int16_t val16 = 0;
 	int ret;
 
 	switch (info) {
