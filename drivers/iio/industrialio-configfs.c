@@ -6,12 +6,11 @@
  */
 
 #include <linux/configfs.h>
-#include <linux/module.h>
+#include <linux/export.h>
 #include <linux/init.h>
-#include <linux/kmod.h>
-#include <linux/slab.h>
+#include <linux/module.h>
+#include <linux/mutex.h>
 
-#include <linux/iio/iio.h>
 #include <linux/iio/configfs.h>
 
 static const struct config_item_type iio_root_group_type = {
