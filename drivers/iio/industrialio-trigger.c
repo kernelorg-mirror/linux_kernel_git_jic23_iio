@@ -13,10 +13,10 @@
 #include <linux/slab.h>
 
 #include <linux/iio/iio.h>
-#include <linux/iio/iio-opaque.h>
 #include <linux/iio/trigger.h>
 #include "iio_core.h"
 #include "iio_core_trigger.h"
+#include "iio_opaque.h"
 #include <linux/iio/trigger_consumer.h>
 
 /* RFC - Question of approach

@@ -21,9 +21,9 @@
 #include <linux/sched/signal.h>
 
 #include <linux/iio/iio.h>
-#include <linux/iio/iio-opaque.h>
 #include "iio_core.h"
 #include "iio_core_trigger.h"
+#include "iio_opaque.h"
 #include <linux/iio/sysfs.h>
 #include <linux/iio/buffer.h>
 #include <linux/iio/buffer_impl.h>
