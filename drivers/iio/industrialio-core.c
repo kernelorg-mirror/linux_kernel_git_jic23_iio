@@ -8,22 +8,36 @@
 
 #define pr_fmt(fmt) "iio-core: " fmt
 
-#include <linux/anon_inodes.h>
-#include <linux/device.h>
+#include <linux/align.h>
+#include <linux/bitops.h>
 #include <linux/cdev.h>
+#include <linux/container_of.h>
 #include <linux/debugfs.h>
+#include <linux/device.h>
 #include <linux/err.h>
+#include <linux/export.h>
 #include <linux/fs.h>
+#include <linux/hrtimer.h>
 #include <linux/idr.h>
+#include <linux/init.h>
 #include <linux/kdev_t.h>
 #include <linux/kernel.h>
+#include <linux/kstrtox.h>
+#include <linux/ktime.h>
+#include <linux/list.h>
+#include <linux/math.h>
+#include <linux/math64.h>
+#include <linux/minmax.h>
 #include <linux/module.h>
 #include <linux/mutex.h>
-#include <linux/poll.h>
+#include <linux/printk.h>
 #include <linux/property.h>
-#include <linux/sched.h>
 #include <linux/slab.h>
-#include <linux/wait.h>
+#include <linux/stat.h>
+#include <linux/string.h>
+#include <linux/sysfs.h>
+#include <linux/time64.h>
+#include <linux/uaccess.h>
 
 #include <linux/iio/iio.h>
 #include "iio_core.h"
@@ -31,8 +45,8 @@
 #include "iio_opaque.h"
 #include <linux/iio/sysfs.h>
 #include <linux/iio/events.h>
-#include <linux/iio/buffer.h>
-#include <linux/iio/buffer_impl.h>
+
+struct iio_buffer;
 
 /* IDA to assign each registered device a unique id */
 static DEFINE_IDA(iio_ida);
