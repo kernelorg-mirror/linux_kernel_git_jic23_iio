@@ -5,11 +5,14 @@
  * Copyright (c) 2015 Intel Corporation
  */
 
-#include <linux/module.h>
+#include <linux/err.h>
+#include <linux/export.h>
 #include <linux/init.h>
-#include <linux/kmod.h>
 #include <linux/list.h>
-#include <linux/slab.h>
+#include <linux/module.h>
+#include <linux/mutex.h>
+#include <linux/printk.h>
+#include <linux/string.h>
 
 #include <linux/iio/sw_trigger.h>
 #include <linux/iio/configfs.h>
