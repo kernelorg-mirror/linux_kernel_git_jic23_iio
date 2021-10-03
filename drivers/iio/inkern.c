@@ -3,11 +3,16 @@
  *
  * Copyright (c) 2011 Jonathan Cameron
  */
+#include <linux/device.h>
 #include <linux/err.h>
 #include <linux/export.h>
-#include <linux/slab.h>
+#include <linux/list.h>
+#include <linux/math64.h>
 #include <linux/mutex.h>
 #include <linux/of.h>
+#include <linux/printk.h>
+#include <linux/slab.h>
+#include <linux/string.h>
 
 #include <linux/iio/iio.h>
 #include "iio_core.h"
