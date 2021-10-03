@@ -19,7 +19,6 @@
 
 #include <linux/iio/events.h>
 #include <linux/iio/iio.h>
-#include <linux/iio/sysfs.h>
 
 #include <asm/unaligned.h>
 
