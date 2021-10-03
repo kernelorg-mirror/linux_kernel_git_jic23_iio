@@ -7,7 +7,6 @@
 
 #include <linux/delay.h>
 #include <linux/device.h>
-#include <linux/iio/iio.h>
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/platform_data/cros_ec_commands.h>
@@ -18,6 +17,8 @@
 #include <linux/slab.h>
 
 #include "cros_ec_trace.h"
+
+struct iio_dev;
 
 /* Precision of fixed point for the m values from the filter */
 #define M_PRECISION BIT(23)
