@@ -1,17 +1,26 @@
 // SPDX-License-Identifier: GPL-2.0-only
-#include <linux/slab.h>
-#include <linux/kernel.h>
-#include <linux/module.h>
+#include <linux/compiler.h>
+#include <linux/container_of.h>
 #include <linux/device.h>
-#include <linux/workqueue.h>
+#include <linux/errno.h>
+#include <linux/export.h>
 #include <linux/kfifo.h>
+#include <linux/limits.h>
+#include <linux/log2.h>
+#include <linux/module.h>
 #include <linux/mutex.h>
+#include <linux/poll.h>
+#include <linux/slab.h>
+#include <linux/stddef.h>
+#include <linux/types.h>
+#include <linux/wait.h>
+
 #include <linux/iio/iio.h>
 #include <linux/iio/buffer.h>
 #include <linux/iio/kfifo_buf.h>
 #include <linux/iio/buffer_impl.h>
-#include <linux/sched.h>
-#include <linux/poll.h>
+
+struct attribute;
 
 struct iio_kfifo {
 	struct iio_buffer buffer;
