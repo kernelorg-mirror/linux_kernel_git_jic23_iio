@@ -4,13 +4,24 @@
  * Copyright (c) 2008 Jonathan Cameron
  */
 
-#include <linux/kernel.h>
-#include <linux/idr.h>
-#include <linux/err.h>
+#include <linux/bitmap.h>
 #include <linux/device.h>
+#include <linux/container_of.h>
+#include <linux/err.h>
+#include <linux/export.h>
+#include <linux/idr.h>
 #include <linux/interrupt.h>
+#include <linux/irq.h>
+#include <linux/kernel.h>
 #include <linux/list.h>
+#include <linux/log2.h>
+#include <linux/module.h>
+#include <linux/mutex.h>
+#include <linux/printk.h>
 #include <linux/slab.h>
+#include <linux/stat.h>
+#include <linux/string.h>
+#include <linux/sysfs.h>
 
 #include <linux/iio/iio.h>
 #include <linux/iio/trigger.h>
