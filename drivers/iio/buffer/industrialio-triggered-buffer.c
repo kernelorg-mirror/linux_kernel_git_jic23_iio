@@ -4,15 +4,20 @@
  *  Author: Lars-Peter Clausen <lars@metafoo.de>
  */
 
-#include <linux/kernel.h>
+#include <linux/device.h>
+#include <linux/errno.h>
 #include <linux/export.h>
+#include <linux/interrupt.h>
 #include <linux/module.h>
+#include <linux/stddef.h>
 #include <linux/iio/iio.h>
 #include <linux/iio/buffer.h>
 #include <linux/iio/buffer_impl.h>
 #include <linux/iio/kfifo_buf.h>
 #include <linux/iio/triggered_buffer.h>
 #include <linux/iio/trigger_consumer.h>
+
+struct attribute;
 
 /**
  * iio_triggered_buffer_setup_ext() - Setup triggered buffer and pollfunc
