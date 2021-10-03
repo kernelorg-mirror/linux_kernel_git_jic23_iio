@@ -9,16 +9,32 @@
  * - Better memory allocation techniques?
  * - Alternative access techniques?
  */
+#include <linux/align.h>
+#include <linux/bitmap.h>
+#include <linux/bitops.h>
 #include <linux/anon_inodes.h>
-#include <linux/kernel.h>
-#include <linux/export.h>
+#include <linux/container_of.h>
 #include <linux/device.h>
+#include <linux/err.h>
+#include <linux/export.h>
 #include <linux/file.h>
 #include <linux/fs.h>
-#include <linux/cdev.h>
-#include <linux/slab.h>
+#include <linux/kernel.h>
+#include <linux/kref.h>
+#include <linux/kstrtox.h>
+#include <linux/list.h>
+#include <linux/math.h>
+#include <linux/minmax.h>
+#include <linux/mutex.h>
 #include <linux/poll.h>
+#include <linux/sched.h>
 #include <linux/sched/signal.h>
+#include <linux/slab.h>
+#include <linux/stat.h>
+#include <linux/string.h>
+#include <linux/sysfs.h>
+#include <linux/uaccess.h>
+#include <linux/wait.h>
 
 #include <linux/iio/iio.h>
 #include "iio_core.h"
