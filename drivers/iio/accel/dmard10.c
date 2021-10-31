@@ -7,6 +7,7 @@
  */
 
 #include <linux/module.h>
+#include <linux/compiler.h>
 #include <linux/i2c.h>
 #include <linux/iio/iio.h>
 #include <linux/iio/sysfs.h>
@@ -218,17 +219,15 @@ static int dmard10_probe(struct i2c_client *client,
 	return devm_iio_device_register(&client->dev, indio_dev);
 }
 
-#ifdef CONFIG_PM_SLEEP
-static int dmard10_suspend(struct device *dev)
+static int __maybe_unused dmard10_suspend(struct device *dev)
 {
 	return dmard10_shutdown(to_i2c_client(dev));
 }
 
-static int dmard10_resume(struct device *dev)
+static int __maybe_unused dmard10_resume(struct device *dev)
 {
 	return dmard10_reset(to_i2c_client(dev));
 }
-#endif
 
 static SIMPLE_DEV_PM_OPS(dmard10_pm_ops, dmard10_suspend, dmard10_resume);
 
