@@ -2,6 +2,13 @@
 #ifndef _ADE7854_H
 #define _ADE7854_H
 
+#include <linux/cache.h>
+#include <linux/mutex.h>
+#include <linux/types.h>
+
+struct device;
+struct iio_dev;
+
 #define ADE7854_AIGAIN    0x4380
 #define ADE7854_AVGAIN    0x4381
 #define ADE7854_BIGAIN    0x4382

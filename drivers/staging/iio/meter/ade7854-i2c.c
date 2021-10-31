@@ -5,14 +5,17 @@
  * Copyright 2010 Analog Devices Inc.
  */
 
-#include <linux/device.h>
-#include <linux/kernel.h>
+#include <linux/errno.h>
 #include <linux/i2c.h>
-#include <linux/slab.h>
+#include <linux/mod_devicetable.h>
 #include <linux/module.h>
+#include <linux/mutex.h>
+#include <linux/types.h>
 
 #include <linux/iio/iio.h>
 #include "ade7854.h"
+
+struct device;
 
 static int ade7854_i2c_write_reg(struct device *dev,
 				 u16 reg_address,
