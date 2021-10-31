@@ -6,16 +6,24 @@
  * Copyright (c) 2018-2021, Topic Embedded Products
  */
 
+#include <linux/bits.h>
+#include <linux/cache.h>
+#include <linux/compiler.h>
 #include <linux/delay.h>
+#include <linux/device.h>
+#include <linux/errno.h>
+#include <linux/export.h>
 #include <linux/iio/iio.h>
-#include <linux/iio/sysfs.h>
-#include <linux/interrupt.h>
+#include <linux/kernel.h>
+#include <linux/mod_devicetable.h>
 #include <linux/module.h>
 #include <linux/pm.h>
 #include <linux/pm_runtime.h>
 #include <linux/regmap.h>
-#include <linux/slab.h>
-#include <asm/unaligned.h>
+#include <linux/stddef.h>
+#include <linux/types.h>
+
+#include <asm/byteorder.h>
 
 #include "bmi088-accel.h"
 

@@ -6,10 +6,15 @@
  * Copyright (c) 2018-2020, Topic Embedded Products
  */
 
+#include <linux/bits.h>
+#include <linux/device.h>
+#include <linux/err.h>
 #include <linux/module.h>
+#include <linux/mod_devicetable.h>
 #include <linux/regmap.h>
-#include <linux/slab.h>
 #include <linux/spi/spi.h>
+#include <linux/stddef.h>
+#include <linux/types.h>
 
 #include "bmi088-accel.h"
 
