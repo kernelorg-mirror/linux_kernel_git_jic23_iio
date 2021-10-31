@@ -4,10 +4,17 @@
  *  Author: Lars-Peter Clausen <lars@metafoo.de>
  */
 
+#include <linux/bitops.h>
+#include <linux/container_of.h>
+#include <linux/device.h>
 #include <linux/err.h>
+#include <linux/errno.h>
 #include <linux/export.h>
-#include <linux/slab.h>
+#include <linux/list.h>
 #include <linux/module.h>
+#include <linux/slab.h>
+#include <linux/stddef.h>
+#include <linux/types.h>
 
 #include <linux/iio/iio.h>
 #include <linux/iio/consumer.h>
