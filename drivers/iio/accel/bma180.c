@@ -12,16 +12,28 @@
  * BMA250: 7-bit I2C slave address 0x18 or 0x19
  */
 
-#include <linux/module.h>
+
+#include <linux/bitops.h>
+#include <linux/bits.h>
+#include <linux/compiler.h>
+#include <linux/delay.h>
+#include <linux/device.h>
+#include <linux/err.h>
+#include <linux/errno.h>
 #include <linux/i2c.h>
 #include <linux/interrupt.h>
-#include <linux/delay.h>
+#include <linux/kernel.h>
+#include <linux/mod_devicetable.h>
+#include <linux/module.h>
+#include <linux/mutex.h>
 #include <linux/of_device.h>
-#include <linux/of.h>
-#include <linux/bitops.h>
+#include <linux/pm.h>
 #include <linux/regulator/consumer.h>
-#include <linux/slab.h>
-#include <linux/string.h>
+#include <linux/stddef.h>
+#include <linux/stat.h>
+#include <linux/sysfs.h>
+#include <linux/types.h>
+
 #include <linux/iio/iio.h>
 #include <linux/iio/sysfs.h>
 #include <linux/iio/buffer.h>
