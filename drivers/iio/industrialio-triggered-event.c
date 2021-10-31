@@ -3,10 +3,11 @@
  * Copyright (C) 2015 Cogent Embedded, Inc.
  */
 
-#include <linux/err.h>
+#include <linux/errno.h>
 #include <linux/export.h>
 #include <linux/interrupt.h>
 #include <linux/module.h>
+#include <linux/stddef.h>
 #include <linux/iio/iio.h>
 #include <linux/iio/triggered_event.h>
 #include <linux/iio/trigger_consumer.h>
