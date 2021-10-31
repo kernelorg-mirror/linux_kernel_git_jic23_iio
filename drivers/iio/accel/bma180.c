@@ -488,10 +488,9 @@ static ssize_t bma180_show_avail(char *buf, const int *vals, unsigned int n,
 	for (i = 0; i < n; i++) {
 		if (!vals[i])
 			continue;
-		len += scnprintf(buf + len, PAGE_SIZE - len,
-			micros ? "0.%06d " : "%d ", vals[i]);
+		len += sysfs_emit_at(buf, len, micros ? "0.%06d " : "%d ", vals[i]);
 	}
-	buf[len - 1] = '\n';
+	sysfs_emit_at(buf, len - 1, "\n");
 
 	return len;
 }
