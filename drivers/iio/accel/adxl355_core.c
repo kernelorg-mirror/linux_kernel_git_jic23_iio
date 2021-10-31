@@ -7,8 +7,15 @@
  * Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/adxl354_adxl355.pdf
  */
 
+#include <linux/bitops.h>
 #include <linux/bits.h>
 #include <linux/bitfield.h>
+#include <linux/cache.h>
+#include <linux/device.h>
+#include <linux/errno.h>
+#include <linux/export.h>
+#include <linux/interrupt.h>
+#include <linux/kernel.h>
 #include <linux/iio/buffer.h>
 #include <linux/iio/iio.h>
 #include <linux/iio/trigger.h>
@@ -16,10 +23,13 @@
 #include <linux/iio/trigger_consumer.h>
 #include <linux/limits.h>
 #include <linux/math64.h>
+#include <linux/minmax.h>
 #include <linux/module.h>
-#include <linux/mod_devicetable.h>
+#include <linux/mutex.h>
 #include <linux/of_irq.h>
 #include <linux/regmap.h>
+#include <linux/stddef.h>
+#include <linux/types.h>
 #include <asm/unaligned.h>
 
 #include "adxl355.h"

@@ -5,6 +5,9 @@
  * Copyright (c) 2021 Puranjay Mohan <puranjay12@gmail.com>
  */
 
+#include <linux/bits.h>
+#include <linux/device.h>
+#include <linux/err.h>
 #include <linux/module.h>
 #include <linux/mod_devicetable.h>
 #include <linux/regmap.h>
