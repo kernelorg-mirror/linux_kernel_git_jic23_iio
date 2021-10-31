@@ -279,11 +279,11 @@ static int ad7746_select_channel(struct iio_dev *indio_dev,
 	return delay;
 }
 
-static inline ssize_t ad7746_start_calib(struct device *dev,
-					 struct device_attribute *attr,
-					 const char *buf,
-					 size_t len,
-					 u8 regval)
+static ssize_t ad7746_start_calib(struct device *dev,
+				  struct device_attribute *attr,
+				  const char *buf,
+				  size_t len,
+				  u8 regval)
 {
 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
 	struct ad7746_chip_info *chip = iio_priv(indio_dev);
