@@ -5,17 +5,33 @@
  * Copyright 2011 Analog Devices Inc.
  */
 
+#include <linux/bitmap.h>
+#include <linux/bitops.h>
+#include <linux/bits.h>
 #include <linux/clk.h>
+#include <linux/container_of.h>
 #include <linux/delay.h>
 #include <linux/device.h>
 #include <linux/err.h>
+#include <linux/errno.h>
 #include <linux/i2c.h>
-#include <linux/interrupt.h>
+#include <linux/jiffies.h>
 #include <linux/kernel.h>
+#include <linux/kstrtox.h>
+#include <linux/minmax.h>
+#include <linux/mod_devicetable.h>
 #include <linux/module.h>
+#include <linux/mutex.h>
+#include <linux/processor.h>
 #include <linux/regulator/consumer.h>
+#include <linux/stddef.h>
+#include <linux/string.h>
 #include <linux/sysfs.h>
 #include <linux/types.h>
+#include <linux/workqueue.h>
+
+#include <asm/byteorder.h>
+#include <asm/div64.h>
 
 #include <linux/iio/buffer.h>
 #include <linux/iio/iio.h>
