@@ -5,10 +5,17 @@
  * Copyright (c) 2016, Jelle van der Waa <jelle@vdwaa.nl>
  */
 
-#include <asm/unaligned.h>
-#include <linux/module.h>
+#include <linux/bits.h>
+#include <linux/device.h>
+#include <linux/errno.h>
+#include <linux/kernel.h>
 #include <linux/i2c.h>
 #include <linux/iio/iio.h>
+#include <linux/module.h>
+#include <linux/mod_devicetable.h>
+#include <linux/types.h>
+
+#include <asm/unaligned.h>
 
 #define DMARD09_DRV_NAME	"dmard09"
 
