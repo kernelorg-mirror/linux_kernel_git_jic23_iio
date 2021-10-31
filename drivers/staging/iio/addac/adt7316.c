@@ -1892,9 +1892,9 @@ static ssize_t adt7316_set_int_mask(struct device *dev,
 	return len;
 }
 
-static inline ssize_t adt7316_show_ad_bound(struct device *dev,
-					    struct device_attribute *attr,
-					    char *buf)
+static ssize_t adt7316_show_ad_bound(struct device *dev,
+				     struct device_attribute *attr,
+				     char *buf)
 {
 	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
 	struct iio_dev *dev_info = dev_to_iio_dev(dev);
@@ -1922,10 +1922,10 @@ static inline ssize_t adt7316_show_ad_bound(struct device *dev,
 	return sprintf(buf, "%d\n", data);
 }
 
-static inline ssize_t adt7316_set_ad_bound(struct device *dev,
-					   struct device_attribute *attr,
-					   const char *buf,
-					   size_t len)
+static ssize_t adt7316_set_ad_bound(struct device *dev,
+				    struct device_attribute *attr,
+				    const char *buf,
+				    size_t len)
 {
 	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
 	struct iio_dev *dev_info = dev_to_iio_dev(dev);
