@@ -104,8 +104,7 @@ static const int ad2s1210_mode_vals[4][2] = {
 	[MOD_CONFIG] = { 1, 0 },
 };
 
-static inline void ad2s1210_set_mode(enum ad2s1210_mode mode,
-				     struct ad2s1210_state *st)
+static void ad2s1210_set_mode(enum ad2s1210_mode mode, struct ad2s1210_state *st)
 {
 	gpiod_set_value(st->gpios[AD2S1210_A0], ad2s1210_mode_vals[mode][0]);
 	gpiod_set_value(st->gpios[AD2S1210_A1], ad2s1210_mode_vals[mode][1]);
@@ -154,8 +153,7 @@ static int ad2s1210_config_read(struct ad2s1210_state *st,
 	return st->rx[1];
 }
 
-static inline
-int ad2s1210_update_frequency_control_word(struct ad2s1210_state *st)
+static int ad2s1210_update_frequency_control_word(struct ad2s1210_state *st)
 {
 	int ret;
 	unsigned char fcw;
@@ -177,7 +175,7 @@ static const int ad2s1210_res_pins[4][2] = {
 	{ 0, 0 }, {0, 1}, {1, 0}, {1, 1}
 };
 
-static inline void ad2s1210_set_resolution_pin(struct ad2s1210_state *st)
+static void ad2s1210_set_resolution_pin(struct ad2s1210_state *st)
 {
 	gpiod_set_value(st->gpios[AD2S1210_RES0],
 			ad2s1210_res_pins[(st->resolution - 10) / 2][0]);
@@ -185,7 +183,7 @@ static inline void ad2s1210_set_resolution_pin(struct ad2s1210_state *st)
 			ad2s1210_res_pins[(st->resolution - 10) / 2][1]);
 }
 
-static inline int ad2s1210_soft_reset(struct ad2s1210_state *st)
+static int ad2s1210_soft_reset(struct ad2s1210_state *st)
 {
 	int ret;
 
