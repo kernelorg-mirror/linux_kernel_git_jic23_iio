@@ -286,10 +286,10 @@ static ssize_t ad7816_show_oti(struct device *dev,
 	return sprintf(buf, "%u\n", chip->oti_data[chip->channel_id]);
 }
 
-static inline ssize_t ad7816_set_oti(struct device *dev,
-				     struct device_attribute *attr,
-				     const char *buf,
-				     size_t len)
+static ssize_t ad7816_set_oti(struct device *dev,
+			      struct device_attribute *attr,
+			      const char *buf,
+			      size_t len)
 {
 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
 	struct ad7816_chip_info *chip = iio_priv(indio_dev);
