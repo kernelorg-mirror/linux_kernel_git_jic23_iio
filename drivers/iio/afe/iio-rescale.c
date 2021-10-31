@@ -7,15 +7,21 @@
  * Author: Peter Rosin <peda@axentia.se>
  */
 
+#include <linux/bits.h>
+#include <linux/device.h>
+#include <linux/errno.h>
 #include <linux/err.h>
 #include <linux/gcd.h>
 #include <linux/iio/consumer.h>
 #include <linux/iio/iio.h>
 #include <linux/module.h>
-#include <linux/of.h>
+#include <linux/mod_devicetable.h>
 #include <linux/of_device.h>
 #include <linux/platform_device.h>
 #include <linux/property.h>
+#include <linux/slab.h>
+
+#include <asm/div64.h>
 
 struct rescale;
 
