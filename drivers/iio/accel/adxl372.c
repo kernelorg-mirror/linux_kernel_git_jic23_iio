@@ -5,13 +5,24 @@
  * Copyright 2018 Analog Devices Inc.
  */
 
+#include <linux/bitmap.h>
 #include <linux/bitfield.h>
 #include <linux/bitops.h>
+#include <linux/bits.h>
+#include <linux/device.h>
+#include <linux/errno.h>
+#include <linux/export.h>
 #include <linux/interrupt.h>
-#include <linux/irq.h>
+#include <linux/kernel.h>
+#include <linux/math.h>
 #include <linux/module.h>
+#include <linux/mutex.h>
 #include <linux/regmap.h>
-#include <linux/spi/spi.h>
+#include <linux/stddef.h>
+#include <linux/string.h>
+#include <linux/stringify.h>
+#include <linux/sysfs.h>
+#include <linux/types.h>
 
 #include <linux/iio/iio.h>
 #include <linux/iio/sysfs.h>
@@ -21,7 +32,11 @@
 #include <linux/iio/trigger_consumer.h>
 #include <linux/iio/triggered_buffer.h>
 
+#include <asm/byteorder.h>
+
 #include "adxl372.h"
+
+struct regmap;
 
 /* ADXL372 registers definition */
 #define ADXL372_DEVID			0x00

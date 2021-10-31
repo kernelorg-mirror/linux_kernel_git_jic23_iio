@@ -8,6 +8,11 @@
 #ifndef _ADXL372_H_
 #define _ADXL372_H_
 
+#include <linux/types.h>
+
+struct device;
+struct regmap;
+
 #define ADXL372_REVID	0x03
 
 int adxl372_probe(struct device *dev, struct regmap *regmap,
