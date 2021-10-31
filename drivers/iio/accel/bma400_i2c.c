@@ -6,6 +6,9 @@
  *
  * I2C address is either 0x14 or 0x15 depending on SDO
  */
+
+#include <linux/device.h>
+#include <linux/err.h>
 #include <linux/i2c.h>
 #include <linux/mod_devicetable.h>
 #include <linux/module.h>

@@ -12,14 +12,22 @@
  */
 
 #include <linux/bitops.h>
+#include <linux/bits.h>
+#include <linux/delay.h>
 #include <linux/device.h>
+#include <linux/err.h>
+#include <linux/errno.h>
+#include <linux/export.h>
 #include <linux/iio/iio.h>
-#include <linux/iio/sysfs.h>
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/mutex.h>
 #include <linux/regmap.h>
 #include <linux/regulator/consumer.h>
+#include <linux/stddef.h>
+#include <linux/types.h>
+
+#include <asm/byteorder.h>
 
 #include "bma400.h"
 

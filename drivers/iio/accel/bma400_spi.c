@@ -5,12 +5,17 @@
  * Copyright 2020 Dan Robertson <dan@dlrobertson.com>
  *
  */
+
 #include <linux/bits.h>
-#include <linux/init.h>
+#include <linux/device.h>
+#include <linux/err.h>
+#include <linux/errno.h>
 #include <linux/mod_devicetable.h>
 #include <linux/module.h>
 #include <linux/regmap.h>
 #include <linux/spi/spi.h>
+#include <linux/string.h>
+#include <linux/types.h>
 
 #include "bma400.h"
 
