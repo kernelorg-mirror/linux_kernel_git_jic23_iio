@@ -1064,8 +1064,7 @@ static int bma180_remove(struct i2c_client *client)
 	return 0;
 }
 
-#ifdef CONFIG_PM_SLEEP
-static int bma180_suspend(struct device *dev)
+static __maybe_unused int bma180_suspend(struct device *dev)
 {
 	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
 	struct bma180_data *data = iio_priv(indio_dev);
@@ -1078,7 +1077,7 @@ static int bma180_suspend(struct device *dev)
 	return ret;
 }
 
-static int bma180_resume(struct device *dev)
+static __maybe_unused int bma180_resume(struct device *dev)
 {
 	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
 	struct bma180_data *data = iio_priv(indio_dev);
@@ -1092,10 +1091,6 @@ static int bma180_resume(struct device *dev)
 }
 
 static SIMPLE_DEV_PM_OPS(bma180_pm_ops, bma180_suspend, bma180_resume);
-#define BMA180_PM_OPS (&bma180_pm_ops)
-#else
-#define BMA180_PM_OPS NULL
-#endif
 
 static const struct i2c_device_id bma180_ids[] = {
 	{ "bma023", BMA023 },
@@ -1136,7 +1131,7 @@ MODULE_DEVICE_TABLE(of, bma180_of_match);
 static struct i2c_driver bma180_driver = {
 	.driver = {
 		.name	= "bma180",
-		.pm	= BMA180_PM_OPS,
+		.pm	= &bma180_pm_ops,
 		.of_match_table = bma180_of_match,
 	},
 	.probe		= bma180_probe,
