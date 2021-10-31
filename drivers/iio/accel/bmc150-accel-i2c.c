@@ -4,12 +4,24 @@
  * Copyright (c) 2014, Intel Corporation.
  */
 
-#include <linux/device.h>
-#include <linux/mod_devicetable.h>
-#include <linux/i2c.h>
-#include <linux/module.h>
 #include <linux/acpi.h>
+#include <linux/bits.h>
+#include <linux/compiler.h>
+#include <linux/container_of.h>
+#include <linux/delay.h>
+#include <linux/device.h>
+#include <linux/err.h>
+#include <linux/i2c.h>
+#include <linux/iio/iio.h>
+#include <linux/jiffies.h>
+#include <linux/kernel.h>
+#include <linux/mod_devicetable.h>
+#include <linux/module.h>
 #include <linux/regmap.h>
+#include <linux/stddef.h>
+#include <linux/types.h>
+#include <linux/uuid.h>
+#include <linux/workqueue.h>
 
 #include "bmc150-accel.h"
 

@@ -4,12 +4,14 @@
  * Copyright © 2015 Pengutronix, Markus Pargmann <mpa@pengutronix.de>
  */
 
+#include <linux/acpi.h>
 #include <linux/device.h>
+#include <linux/err.h>
 #include <linux/mod_devicetable.h>
 #include <linux/module.h>
-#include <linux/acpi.h>
 #include <linux/regmap.h>
 #include <linux/spi/spi.h>
+#include <linux/stddef.h>
 
 #include "bmc150-accel.h"
 
