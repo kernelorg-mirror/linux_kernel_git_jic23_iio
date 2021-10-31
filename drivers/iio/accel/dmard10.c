@@ -6,12 +6,20 @@
  * Copyright (c) 2012 Domintech Technology Co., Ltd
  */
 
-#include <linux/module.h>
+#include <linux/bitops.h>
+#include <linux/bits.h>
 #include <linux/compiler.h>
+#include <linux/device.h>
+#include <linux/errno.h>
 #include <linux/i2c.h>
 #include <linux/iio/iio.h>
-#include <linux/iio/sysfs.h>
-#include <linux/byteorder/generic.h>
+#include <linux/kernel.h>
+#include <linux/module.h>
+#include <linux/mod_devicetable.h>
+#include <linux/pm.h>
+#include <linux/types.h>
+
+#include <asm/byteorder.h>
 
 #define DMARD10_REG_ACTR			0x00
 #define DMARD10_REG_AFEM			0x0c
