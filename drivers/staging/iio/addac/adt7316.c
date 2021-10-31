@@ -5,18 +5,20 @@
  * Copyright 2010 Analog Devices Inc.
  */
 
-#include <linux/interrupt.h>
-#include <linux/gpio/consumer.h>
-#include <linux/irq.h>
-#include <linux/workqueue.h>
+#include <linux/bits.h>
+#include <linux/err.h>
+#include <linux/errno.h>
 #include <linux/device.h>
+#include <linux/export.h>
+#include <linux/gpio/consumer.h>
+#include <linux/interrupt.h>
+#include <linux/irq.h>
 #include <linux/kernel.h>
-#include <linux/slab.h>
-#include <linux/sysfs.h>
-#include <linux/list.h>
-#include <linux/i2c.h>
-#include <linux/rtc.h>
+#include <linux/kstrtox.h>
 #include <linux/module.h>
+#include <linux/string.h>
+#include <linux/stddef.h>
+#include <linux/sysfs.h>
 
 #include <linux/iio/iio.h>
 #include <linux/iio/events.h>

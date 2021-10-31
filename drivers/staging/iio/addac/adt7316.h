@@ -11,6 +11,8 @@
 #include <linux/types.h>
 #include <linux/pm.h>
 
+struct device;
+
 #define ADT7316_REG_MAX_ADDR		0x3F
 
 struct adt7316_bus {
