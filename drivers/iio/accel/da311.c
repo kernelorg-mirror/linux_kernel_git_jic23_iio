@@ -7,6 +7,7 @@
  */
 
 #include <linux/bits.h>
+#include <linux/compiler.h>
 #include <linux/device.h>
 #include <linux/errno.h>
 #include <linux/i2c.h>
@@ -262,17 +263,15 @@ static int da311_probe(struct i2c_client *client,
 	return devm_iio_device_register(&client->dev, indio_dev);
 }
 
-#ifdef CONFIG_PM_SLEEP
-static int da311_suspend(struct device *dev)
+static __maybe_unused int da311_suspend(struct device *dev)
 {
 	return da311_enable(to_i2c_client(dev), false);
 }
 
-static int da311_resume(struct device *dev)
+static __maybe_unused int da311_resume(struct device *dev)
 {
 	return da311_enable(to_i2c_client(dev), true);
 }
-#endif
 
 static SIMPLE_DEV_PM_OPS(da311_pm_ops, da311_suspend, da311_resume);
 
