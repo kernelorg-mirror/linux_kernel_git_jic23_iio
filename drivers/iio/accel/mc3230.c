@@ -160,8 +160,7 @@ static int mc3230_remove(struct i2c_client *client)
 	return mc3230_set_opcon(iio_priv(indio_dev), MC3230_MODE_OPCON_STANDBY);
 }
 
-#ifdef CONFIG_PM_SLEEP
-static int mc3230_suspend(struct device *dev)
+static __maybe_unused int mc3230_suspend(struct device *dev)
 {
 	struct mc3230_data *data;
 
@@ -170,7 +169,7 @@ static int mc3230_suspend(struct device *dev)
 	return mc3230_set_opcon(data, MC3230_MODE_OPCON_STANDBY);
 }
 
-static int mc3230_resume(struct device *dev)
+static __maybe_unused int mc3230_resume(struct device *dev)
 {
 	struct mc3230_data *data;
 
@@ -178,7 +177,6 @@ static int mc3230_resume(struct device *dev)
 
 	return mc3230_set_opcon(data, MC3230_MODE_OPCON_WAKE);
 }
-#endif
 
 static SIMPLE_DEV_PM_OPS(mc3230_pm_ops, mc3230_suspend, mc3230_resume);
 
