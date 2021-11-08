@@ -537,8 +537,7 @@ static int tmp007_probe(struct i2c_client *client,
 	return devm_iio_device_register(&client->dev, indio_dev);
 }
 
-#ifdef CONFIG_PM_SLEEP
-static int tmp007_suspend(struct device *dev)
+static __maybe_unused int tmp007_suspend(struct device *dev)
 {
 	struct tmp007_data *data = iio_priv(i2c_get_clientdata(
 			to_i2c_client(dev)));
@@ -546,7 +545,7 @@ static int tmp007_suspend(struct device *dev)
 	return tmp007_powerdown(data);
 }
 
-static int tmp007_resume(struct device *dev)
+static __maybe_unused int tmp007_resume(struct device *dev)
 {
 	struct tmp007_data *data = iio_priv(i2c_get_clientdata(
 			to_i2c_client(dev)));
@@ -554,7 +553,6 @@ static int tmp007_resume(struct device *dev)
 	return i2c_smbus_write_word_swapped(data->client, TMP007_CONFIG,
 			data->config | TMP007_CONFIG_CONV_EN);
 }
-#endif
 
 static SIMPLE_DEV_PM_OPS(tmp007_pm_ops, tmp007_suspend, tmp007_resume);
 
