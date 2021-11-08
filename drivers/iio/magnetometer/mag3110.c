@@ -573,8 +573,7 @@ static int mag3110_remove(struct i2c_client *client)
 	return 0;
 }
 
-#ifdef CONFIG_PM_SLEEP
-static int mag3110_suspend(struct device *dev)
+static __maybe_unused int mag3110_suspend(struct device *dev)
 {
 	struct mag3110_data *data = iio_priv(i2c_get_clientdata(
 		to_i2c_client(dev)));
@@ -624,10 +623,6 @@ static int mag3110_resume(struct device *dev)
 }
 
 static SIMPLE_DEV_PM_OPS(mag3110_pm_ops, mag3110_suspend, mag3110_resume);
-#define MAG3110_PM_OPS (&mag3110_pm_ops)
-#else
-#define MAG3110_PM_OPS NULL
-#endif
 
 static const struct i2c_device_id mag3110_id[] = {
 	{ "mag3110", 0 },
