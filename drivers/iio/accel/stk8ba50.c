@@ -504,8 +504,7 @@ static int stk8ba50_remove(struct i2c_client *client)
 	return stk8ba50_set_power(data, STK8BA50_MODE_SUSPEND);
 }
 
-#ifdef CONFIG_PM_SLEEP
-static int stk8ba50_suspend(struct device *dev)
+static __maybe_unused int stk8ba50_suspend(struct device *dev)
 {
 	struct stk8ba50_data *data;
 
@@ -514,7 +513,7 @@ static int stk8ba50_suspend(struct device *dev)
 	return stk8ba50_set_power(data, STK8BA50_MODE_SUSPEND);
 }
 
-static int stk8ba50_resume(struct device *dev)
+static __maybe_unused int stk8ba50_resume(struct device *dev)
 {
 	struct stk8ba50_data *data;
 
@@ -524,11 +523,6 @@ static int stk8ba50_resume(struct device *dev)
 }
 
 static SIMPLE_DEV_PM_OPS(stk8ba50_pm_ops, stk8ba50_suspend, stk8ba50_resume);
-
-#define STK8BA50_PM_OPS (&stk8ba50_pm_ops)
-#else
-#define STK8BA50_PM_OPS NULL
-#endif
 
 static const struct i2c_device_id stk8ba50_i2c_id[] = {
 	{"stk8ba50", 0},
@@ -546,7 +540,7 @@ MODULE_DEVICE_TABLE(acpi, stk8ba50_acpi_id);
 static struct i2c_driver stk8ba50_driver = {
 	.driver = {
 		.name = "stk8ba50",
-		.pm = STK8BA50_PM_OPS,
+		.pm = pm_ptr(&stk8ba50_pm_ops),
 		.acpi_match_table = ACPI_PTR(stk8ba50_acpi_id),
 	},
 	.probe =            stk8ba50_probe,
