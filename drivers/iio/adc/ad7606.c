@@ -695,9 +695,7 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
 }
 EXPORT_SYMBOL_GPL(ad7606_probe);
 
-#ifdef CONFIG_PM_SLEEP
-
-static int ad7606_suspend(struct device *dev)
+static __maybe_unused int ad7606_suspend(struct device *dev)
 {
 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
 	struct ad7606_state *st = iio_priv(indio_dev);
@@ -710,7 +708,7 @@ static int ad7606_suspend(struct device *dev)
 	return 0;
 }
 
-static int ad7606_resume(struct device *dev)
+static __maybe_unused int ad7606_resume(struct device *dev)
 {
 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
 	struct ad7606_state *st = iio_priv(indio_dev);
@@ -726,8 +724,6 @@ static int ad7606_resume(struct device *dev)
 
 SIMPLE_DEV_PM_OPS(ad7606_pm_ops, ad7606_suspend, ad7606_resume);
 EXPORT_SYMBOL_GPL(ad7606_pm_ops);
-
-#endif
 
 MODULE_AUTHOR("Michael Hennerich <michael.hennerich@analog.com>");
 MODULE_DESCRIPTION("Analog Devices AD7606 ADC");
