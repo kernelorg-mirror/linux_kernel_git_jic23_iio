@@ -1586,15 +1586,14 @@ static int ltr501_remove(struct i2c_client *client)
 	return 0;
 }
 
-#ifdef CONFIG_PM_SLEEP
-static int ltr501_suspend(struct device *dev)
+static __maybe_unused int ltr501_suspend(struct device *dev)
 {
 	struct ltr501_data *data = iio_priv(i2c_get_clientdata(
 					    to_i2c_client(dev)));
 	return ltr501_powerdown(data);
 }
 
-static int ltr501_resume(struct device *dev)
+static __maybe_unused int ltr501_resume(struct device *dev)
 {
 	struct ltr501_data *data = iio_priv(i2c_get_clientdata(
 					    to_i2c_client(dev)));
@@ -1602,7 +1601,6 @@ static int ltr501_resume(struct device *dev)
 	return ltr501_write_contr(data, data->als_contr,
 		data->ps_contr);
 }
-#endif
 
 static SIMPLE_DEV_PM_OPS(ltr501_pm_ops, ltr501_suspend, ltr501_resume);
 
@@ -1636,7 +1634,7 @@ static struct i2c_driver ltr501_driver = {
 	.driver = {
 		.name   = LTR501_DRV_NAME,
 		.of_match_table = ltr501_of_match,
-		.pm	= &ltr501_pm_ops,
+		.pm	= pm_ptr(&ltr501_pm_ops),
 		.acpi_match_table = ACPI_PTR(ltr_acpi_match),
 	},
 	.probe  = ltr501_probe,
