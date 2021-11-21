@@ -1281,19 +1281,17 @@ int mpu3050_common_remove(struct device *dev)
 }
 EXPORT_SYMBOL(mpu3050_common_remove);
 
-#ifdef CONFIG_PM
-static int mpu3050_runtime_suspend(struct device *dev)
+static __maybe_unused int mpu3050_runtime_suspend(struct device *dev)
 {
 	return mpu3050_power_down(iio_priv(dev_get_drvdata(dev)));
 }
 
-static int mpu3050_runtime_resume(struct device *dev)
+static __maybe_unused int mpu3050_runtime_resume(struct device *dev)
 {
 	return mpu3050_power_up(iio_priv(dev_get_drvdata(dev)));
 }
-#endif /* CONFIG_PM */
 
-const struct dev_pm_ops mpu3050_dev_pm_ops = {
+const __maybe_unused struct dev_pm_ops mpu3050_dev_pm_ops = {
 	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
 				pm_runtime_force_resume)
 	SET_RUNTIME_PM_OPS(mpu3050_runtime_suspend,
