@@ -632,8 +632,7 @@ static int stk3310_remove(struct i2c_client *client)
 	return stk3310_set_state(iio_priv(indio_dev), STK3310_STATE_STANDBY);
 }
 
-#ifdef CONFIG_PM_SLEEP
-static int stk3310_suspend(struct device *dev)
+static __maybe_unused int stk3310_suspend(struct device *dev)
 {
 	struct stk3310_data *data;
 
@@ -642,7 +641,7 @@ static int stk3310_suspend(struct device *dev)
 	return stk3310_set_state(data, STK3310_STATE_STANDBY);
 }
 
-static int stk3310_resume(struct device *dev)
+static __maybe_unused int stk3310_resume(struct device *dev)
 {
 	u8 state = 0;
 	struct stk3310_data *data;
@@ -657,11 +656,6 @@ static int stk3310_resume(struct device *dev)
 }
 
 static SIMPLE_DEV_PM_OPS(stk3310_pm_ops, stk3310_suspend, stk3310_resume);
-
-#define STK3310_PM_OPS (&stk3310_pm_ops)
-#else
-#define STK3310_PM_OPS NULL
-#endif
 
 static const struct i2c_device_id stk3310_i2c_id[] = {
 	{"STK3310", 0},
@@ -692,7 +686,7 @@ static struct i2c_driver stk3310_driver = {
 	.driver = {
 		.name = "stk3310",
 		.of_match_table = stk3310_of_match,
-		.pm = STK3310_PM_OPS,
+		.pm = pm_ptr(&stk3310_pm_ops),
 		.acpi_match_table = ACPI_PTR(stk3310_acpi_id),
 	},
 	.probe =            stk3310_probe,
