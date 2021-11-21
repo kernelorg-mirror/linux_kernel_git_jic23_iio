@@ -295,8 +295,7 @@ static void calibrate_as3935(struct as3935_state *st)
 	as3935_write(st, AS3935_NFLWDTH, st->nflwdth_reg);
 }
 
-#ifdef CONFIG_PM_SLEEP
-static int as3935_suspend(struct device *dev)
+static __maybe_unused int as3935_suspend(struct device *dev)
 {
 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
 	struct as3935_state *st = iio_priv(indio_dev);
@@ -316,7 +315,7 @@ err_suspend:
 	return ret;
 }
 
-static int as3935_resume(struct device *dev)
+static __maybe_unused int as3935_resume(struct device *dev)
 {
 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
 	struct as3935_state *st = iio_priv(indio_dev);
@@ -338,11 +337,6 @@ err_resume:
 }
 
 static SIMPLE_DEV_PM_OPS(as3935_pm_ops, as3935_suspend, as3935_resume);
-#define AS3935_PM_OPS (&as3935_pm_ops)
-
-#else
-#define AS3935_PM_OPS NULL
-#endif
 
 static void as3935_stop_work(void *data)
 {
@@ -472,7 +466,7 @@ static struct spi_driver as3935_driver = {
 	.driver = {
 		.name	= "as3935",
 		.of_match_table = as3935_of_match,
-		.pm	= AS3935_PM_OPS,
+		.pm	= pm_ptr(&as3935_pm_ops),
 	},
 	.probe		= as3935_probe,
 	.id_table	= as3935_id,
