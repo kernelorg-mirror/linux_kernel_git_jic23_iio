@@ -1138,8 +1138,7 @@ int bmp280_common_probe(struct device *dev,
 }
 EXPORT_SYMBOL(bmp280_common_probe);
 
-#ifdef CONFIG_PM
-static int bmp280_runtime_suspend(struct device *dev)
+static __maybe_unused int bmp280_runtime_suspend(struct device *dev)
 {
 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
 	struct bmp280_data *data = iio_priv(indio_dev);
@@ -1147,7 +1146,7 @@ static int bmp280_runtime_suspend(struct device *dev)
 	return regulator_bulk_disable(BMP280_NUM_SUPPLIES, data->supplies);
 }
 
-static int bmp280_runtime_resume(struct device *dev)
+static __maybe_unused int bmp280_runtime_resume(struct device *dev)
 {
 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
 	struct bmp280_data *data = iio_priv(indio_dev);
@@ -1159,7 +1158,6 @@ static int bmp280_runtime_resume(struct device *dev)
 	usleep_range(data->start_up_time, data->start_up_time + 100);
 	return data->chip_info->chip_config(data);
 }
-#endif /* CONFIG_PM */
 
 const struct dev_pm_ops bmp280_dev_pm_ops = {
 	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
