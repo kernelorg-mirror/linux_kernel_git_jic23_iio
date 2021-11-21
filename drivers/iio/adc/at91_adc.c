@@ -1234,8 +1234,7 @@ static int at91_adc_remove(struct platform_device *pdev)
 	return 0;
 }
 
-#ifdef CONFIG_PM_SLEEP
-static int at91_adc_suspend(struct device *dev)
+static __maybe_unused int at91_adc_suspend(struct device *dev)
 {
 	struct iio_dev *idev = dev_get_drvdata(dev);
 	struct at91_adc_state *st = iio_priv(idev);
@@ -1246,7 +1245,7 @@ static int at91_adc_suspend(struct device *dev)
 	return 0;
 }
 
-static int at91_adc_resume(struct device *dev)
+static __maybe_unused int at91_adc_resume(struct device *dev)
 {
 	struct iio_dev *idev = dev_get_drvdata(dev);
 	struct at91_adc_state *st = iio_priv(idev);
@@ -1256,7 +1255,6 @@ static int at91_adc_resume(struct device *dev)
 
 	return 0;
 }
-#endif
 
 static SIMPLE_DEV_PM_OPS(at91_adc_pm_ops, at91_adc_suspend, at91_adc_resume);
 
@@ -1386,7 +1384,7 @@ static struct platform_driver at91_adc_driver = {
 	.driver = {
 		   .name = DRIVER_NAME,
 		   .of_match_table = at91_adc_dt_ids,
-		   .pm = &at91_adc_pm_ops,
+		   .pm = pm_ptr(&at91_adc_pm_ops),
 	},
 };
 
