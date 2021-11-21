@@ -481,8 +481,7 @@ static int rockchip_saradc_probe(struct platform_device *pdev)
 	return devm_iio_device_register(&pdev->dev, indio_dev);
 }
 
-#ifdef CONFIG_PM_SLEEP
-static int rockchip_saradc_suspend(struct device *dev)
+static __maybe_unused int rockchip_saradc_suspend(struct device *dev)
 {
 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
 	struct rockchip_saradc *info = iio_priv(indio_dev);
@@ -494,7 +493,7 @@ static int rockchip_saradc_suspend(struct device *dev)
 	return 0;
 }
 
-static int rockchip_saradc_resume(struct device *dev)
+static __maybe_unused int rockchip_saradc_resume(struct device *dev)
 {
 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
 	struct rockchip_saradc *info = iio_priv(indio_dev);
@@ -514,7 +513,6 @@ static int rockchip_saradc_resume(struct device *dev)
 
 	return ret;
 }
-#endif
 
 static SIMPLE_DEV_PM_OPS(rockchip_saradc_pm_ops,
 			 rockchip_saradc_suspend, rockchip_saradc_resume);
@@ -524,7 +522,7 @@ static struct platform_driver rockchip_saradc_driver = {
 	.driver		= {
 		.name	= "rockchip-saradc",
 		.of_match_table = rockchip_saradc_match,
-		.pm	= &rockchip_saradc_pm_ops,
+		.pm	= pm_ptr(&rockchip_saradc_pm_ops),
 	},
 };
 
