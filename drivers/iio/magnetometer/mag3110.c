@@ -599,7 +599,7 @@ static __maybe_unused int mag3110_suspend(struct device *dev)
 	return 0;
 }
 
-static int mag3110_resume(struct device *dev)
+static __maybe_unused int mag3110_resume(struct device *dev)
 {
 	struct mag3110_data *data = iio_priv(i2c_get_clientdata(
 		to_i2c_client(dev)));
@@ -640,7 +640,7 @@ static struct i2c_driver mag3110_driver = {
 	.driver = {
 		.name	= "mag3110",
 		.of_match_table = mag3110_of_match,
-		.pm	= MAG3110_PM_OPS,
+		.pm	= pm_ptr(&mag3110_pm_ops),
 	},
 	.probe = mag3110_probe,
 	.remove = mag3110_remove,
