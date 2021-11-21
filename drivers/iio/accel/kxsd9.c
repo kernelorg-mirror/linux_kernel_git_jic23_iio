@@ -492,8 +492,7 @@ void kxsd9_common_remove(struct device *dev)
 }
 EXPORT_SYMBOL(kxsd9_common_remove);
 
-#ifdef CONFIG_PM
-static int kxsd9_runtime_suspend(struct device *dev)
+static __maybe_unused int kxsd9_runtime_suspend(struct device *dev)
 {
 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
 	struct kxsd9_state *st = iio_priv(indio_dev);
@@ -501,16 +500,15 @@ static int kxsd9_runtime_suspend(struct device *dev)
 	return kxsd9_power_down(st);
 }
 
-static int kxsd9_runtime_resume(struct device *dev)
+static __maybe_unused int kxsd9_runtime_resume(struct device *dev)
 {
 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
 	struct kxsd9_state *st = iio_priv(indio_dev);
 
 	return kxsd9_power_up(st);
 }
-#endif /* CONFIG_PM */
 
-const struct dev_pm_ops kxsd9_dev_pm_ops = {
+const __maybe_unused struct dev_pm_ops kxsd9_dev_pm_ops = {
 	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
 				pm_runtime_force_resume)
 	SET_RUNTIME_PM_OPS(kxsd9_runtime_suspend,
