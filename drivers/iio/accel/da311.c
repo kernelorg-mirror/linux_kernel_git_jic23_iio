@@ -277,7 +277,7 @@ MODULE_DEVICE_TABLE(i2c, da311_i2c_id);
 static struct i2c_driver da311_driver = {
 	.driver = {
 		.name = "da311",
-		.pm = &da311_pm_ops,
+		.pm = pm_ptr(&da311_pm_ops),
 	},
 	.probe		= da311_probe,
 	.id_table	= da311_i2c_id,
