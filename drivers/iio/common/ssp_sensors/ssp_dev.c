@@ -612,8 +612,7 @@ static int ssp_remove(struct spi_device *spi)
 	return 0;
 }
 
-#ifdef CONFIG_PM_SLEEP
-static int ssp_suspend(struct device *dev)
+static __maybe_unused int ssp_suspend(struct device *dev)
 {
 	int ret;
 	struct ssp_data *data = spi_get_drvdata(to_spi_device(dev));
@@ -638,7 +637,7 @@ static int ssp_suspend(struct device *dev)
 	return 0;
 }
 
-static int ssp_resume(struct device *dev)
+static __maybe_unused int ssp_resume(struct device *dev)
 {
 	int ret;
 	struct ssp_data *data = spi_get_drvdata(to_spi_device(dev));
@@ -661,17 +660,14 @@ static int ssp_resume(struct device *dev)
 
 	return 0;
 }
-#endif /* CONFIG_PM_SLEEP */
 
-static const struct dev_pm_ops ssp_pm_ops = {
-	SET_SYSTEM_SLEEP_PM_OPS(ssp_suspend, ssp_resume)
-};
+static SIMPLE_DEV_PM_OPS(ssp_pm_ops, ssp_suspend, ssp_resume);
 
 static struct spi_driver ssp_driver = {
 	.probe = ssp_probe,
 	.remove = ssp_remove,
 	.driver = {
-		.pm = &ssp_pm_ops,
+		.pm = pm_ptr(&ssp_pm_ops),
 		.of_match_table = of_match_ptr(ssp_of_match),
 		.name = "sensorhub"
 	},
