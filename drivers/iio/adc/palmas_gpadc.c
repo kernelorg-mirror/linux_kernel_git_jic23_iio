@@ -653,8 +653,7 @@ static int palmas_gpadc_remove(struct platform_device *pdev)
 	return 0;
 }
 
-#ifdef CONFIG_PM_SLEEP
-static int palmas_adc_wakeup_configure(struct palmas_gpadc *adc)
+static __maybe_unused int palmas_adc_wakeup_configure(struct palmas_gpadc *adc)
 {
 	int adc_period, conv;
 	int i;
@@ -759,7 +758,7 @@ static int palmas_adc_wakeup_configure(struct palmas_gpadc *adc)
 	return ret;
 }
 
-static int palmas_adc_wakeup_reset(struct palmas_gpadc *adc)
+static __maybe_unused int palmas_adc_wakeup_reset(struct palmas_gpadc *adc)
 {
 	int ret;
 
@@ -777,7 +776,7 @@ static int palmas_adc_wakeup_reset(struct palmas_gpadc *adc)
 	return ret;
 }
 
-static int palmas_gpadc_suspend(struct device *dev)
+static __maybe_unused int palmas_gpadc_suspend(struct device *dev)
 {
 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
 	struct palmas_gpadc *adc = iio_priv(indio_dev);
@@ -800,7 +799,7 @@ static int palmas_gpadc_suspend(struct device *dev)
 	return 0;
 }
 
-static int palmas_gpadc_resume(struct device *dev)
+static __maybe_unused int palmas_gpadc_resume(struct device *dev)
 {
 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
 	struct palmas_gpadc *adc = iio_priv(indio_dev);
@@ -822,9 +821,8 @@ static int palmas_gpadc_resume(struct device *dev)
 
 	return 0;
 };
-#endif
 
-static const struct dev_pm_ops palmas_pm_ops = {
+static __maybe_unused const struct dev_pm_ops palmas_pm_ops = {
 	SET_SYSTEM_SLEEP_PM_OPS(palmas_gpadc_suspend,
 				palmas_gpadc_resume)
 };
@@ -840,7 +838,7 @@ static struct platform_driver palmas_gpadc_driver = {
 	.remove = palmas_gpadc_remove,
 	.driver = {
 		.name = MOD_NAME,
-		.pm = &palmas_pm_ops,
+		.pm = pm_ptr(&palmas_pm_ops),
 		.of_match_table = of_palmas_gpadc_match_tbl,
 	},
 };
