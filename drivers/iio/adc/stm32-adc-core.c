@@ -763,28 +763,26 @@ static int stm32_adc_remove(struct platform_device *pdev)
 	return 0;
 }
 
-#if defined(CONFIG_PM)
-static int stm32_adc_core_runtime_suspend(struct device *dev)
+static __maybe_unused int stm32_adc_core_runtime_suspend(struct device *dev)
 {
 	stm32_adc_core_hw_stop(dev);
 
 	return 0;
 }
 
-static int stm32_adc_core_runtime_resume(struct device *dev)
+static __maybe_unused int stm32_adc_core_runtime_resume(struct device *dev)
 {
 	return stm32_adc_core_hw_start(dev);
 }
 
-static int stm32_adc_core_runtime_idle(struct device *dev)
+static __maybe_unused int stm32_adc_core_runtime_idle(struct device *dev)
 {
 	pm_runtime_mark_last_busy(dev);
 
 	return 0;
 }
-#endif
 
-static const struct dev_pm_ops stm32_adc_core_pm_ops = {
+static __maybe_unused const struct dev_pm_ops stm32_adc_core_pm_ops = {
 	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
 				pm_runtime_force_resume)
 	SET_RUNTIME_PM_OPS(stm32_adc_core_runtime_suspend,
@@ -836,7 +834,7 @@ static struct platform_driver stm32_adc_driver = {
 	.driver = {
 		.name = "stm32-adc-core",
 		.of_match_table = stm32_adc_of_match,
-		.pm = &stm32_adc_core_pm_ops,
+		.pm = pm_ptr(&stm32_adc_core_pm_ops),
 	},
 };
 module_platform_driver(stm32_adc_driver);
