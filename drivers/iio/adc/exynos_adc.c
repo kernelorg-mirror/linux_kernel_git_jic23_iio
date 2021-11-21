@@ -968,8 +968,7 @@ static int exynos_adc_remove(struct platform_device *pdev)
 	return 0;
 }
 
-#ifdef CONFIG_PM_SLEEP
-static int exynos_adc_suspend(struct device *dev)
+static __maybe_unused int exynos_adc_suspend(struct device *dev)
 {
 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
 	struct exynos_adc *info = iio_priv(indio_dev);
@@ -982,7 +981,7 @@ static int exynos_adc_suspend(struct device *dev)
 	return 0;
 }
 
-static int exynos_adc_resume(struct device *dev)
+static __maybe_unused int exynos_adc_resume(struct device *dev)
 {
 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
 	struct exynos_adc *info = iio_priv(indio_dev);
@@ -1001,7 +1000,6 @@ static int exynos_adc_resume(struct device *dev)
 
 	return 0;
 }
-#endif
 
 static SIMPLE_DEV_PM_OPS(exynos_adc_pm_ops,
 			exynos_adc_suspend,
@@ -1013,7 +1011,7 @@ static struct platform_driver exynos_adc_driver = {
 	.driver		= {
 		.name	= "exynos-adc",
 		.of_match_table = exynos_adc_match,
-		.pm	= &exynos_adc_pm_ops,
+		.pm	= pm_ptr(&exynos_adc_pm_ops),
 	},
 };
 
