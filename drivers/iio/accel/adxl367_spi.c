@@ -9,6 +9,8 @@
 #include <linux/regmap.h>
 #include <linux/spi/spi.h>
 
+#include <linux/iio/iio.h>
+
 #include "adxl367.h"
 
 #define ADXL367_SPI_WRITE_COMMAND	0x0A
@@ -31,7 +33,7 @@ struct adxl367_spi_state {
 	 * DMA (thus cache coherency maintenance) requires the
 	 * transfer buffers to live in their own cache lines.
 	 */
-	u8			reg_write_tx_buf[1] ____cacheline_aligned;
+	u8			reg_write_tx_buf[1] __aligned(IIO_ALIGN);
 	u8			reg_read_tx_buf[2];
 	u8			fifo_tx_buf[1];
 };
