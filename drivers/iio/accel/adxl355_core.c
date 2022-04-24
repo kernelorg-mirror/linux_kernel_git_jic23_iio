@@ -177,7 +177,7 @@ struct adxl355_data {
 			u8 buf[14];
 			s64 ts;
 		} buffer;
-	} ____cacheline_aligned;
+	} __aligned(IIO_ALIGN);
 };
 
 static int adxl355_set_op_mode(struct adxl355_data *data,
