@@ -71,7 +71,7 @@ struct ad5449 {
 	 * DMA (thus cache coherency maintenance) requires the
 	 * transfer buffers to live in their own cache lines.
 	 */
-	__be16 data[2] ____cacheline_aligned;
+	__be16 data[2] __aligned(IIO_ALIGN);
 };
 
 enum ad5449_type {
