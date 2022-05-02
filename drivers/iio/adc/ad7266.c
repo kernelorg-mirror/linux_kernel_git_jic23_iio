@@ -45,7 +45,7 @@ struct ad7266_state {
 	struct {
 		__be16 sample[2];
 		s64 timestamp;
-	} data ____cacheline_aligned;
+	} data __aligned(IIO_ALIGN);
 };
 
 static int ad7266_wakeup(struct ad7266_state *st)
