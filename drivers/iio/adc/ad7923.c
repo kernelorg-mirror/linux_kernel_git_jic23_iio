@@ -62,7 +62,7 @@ struct ad7923_state {
 	 * Ensure rx_buf can be directly used in iio_push_to_buffers_with_timetamp
 	 * Length = 8 channels + 4 extra for 8 byte timestamp
 	 */
-	__be16				rx_buf[12] ____cacheline_aligned;
+	__be16				rx_buf[12] __aligned(IIO_ALIGN);
 	__be16				tx_buf[4];
 };
 
