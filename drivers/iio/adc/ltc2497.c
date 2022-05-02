@@ -23,7 +23,7 @@ struct ltc2497_driverdata {
 	 * DMA (thus cache coherency maintenance) requires the
 	 * transfer buffers to live in their own cache lines.
 	 */
-	__be32 buf ____cacheline_aligned;
+	__be32 buf __aligned(IIO_ALIGN);
 };
 
 static int ltc2497_result_and_measure(struct ltc2497core_driverdata *ddata,
