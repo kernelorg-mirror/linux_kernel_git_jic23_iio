@@ -49,8 +49,7 @@ struct ad7476_state {
 	 * Make the buffer large enough for one 16 bit sample and one 64 bit
 	 * aligned 64 bit timestamp.
 	 */
-	unsigned char data[ALIGN(2, sizeof(s64)) + sizeof(s64)]
-			____cacheline_aligned;
+	unsigned char data[ALIGN(2, sizeof(s64)) + sizeof(s64)] __aligned(IIO_ALIGN);
 };
 
 enum ad7476_supported_device_ids {
