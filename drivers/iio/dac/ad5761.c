@@ -76,7 +76,7 @@ struct ad5761_state {
 	union {
 		__be32 d32;
 		u8 d8[4];
-	} data[3] ____cacheline_aligned;
+	} data[3] __aligned(IIO_ALIGN);
 };
 
 static const struct ad5761_range_params ad5761_range_params[] = {
