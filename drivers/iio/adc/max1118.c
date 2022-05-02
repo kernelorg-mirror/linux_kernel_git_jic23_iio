@@ -42,7 +42,7 @@ struct max1118 {
 		s64 ts __aligned(8);
 	} scan;
 
-	u8 data ____cacheline_aligned;
+	u8 data __aligned(IIO_ALIGN);
 };
 
 #define MAX1118_CHANNEL(ch)						\
