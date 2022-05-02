@@ -27,7 +27,7 @@ struct ltc2496_driverdata {
 	 * DMA (thus cache coherency maintenance) requires the
 	 * transfer buffers to live in their own cache lines.
 	 */
-	unsigned char rxbuf[3] ____cacheline_aligned;
+	unsigned char rxbuf[3] __aligned(IIO_ALIGN);
 	unsigned char txbuf[3];
 };
 
