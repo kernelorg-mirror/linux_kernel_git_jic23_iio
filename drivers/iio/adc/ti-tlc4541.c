@@ -42,7 +42,7 @@ struct tlc4541_state {
 	 * 2 bytes data + 6 bytes padding + 8 bytes timestamp when
 	 * call iio_push_to_buffers_with_timestamp.
 	 */
-	__be16                          rx_buf[8] ____cacheline_aligned;
+	__be16                          rx_buf[8] __aligned(IIO_ALIGN);
 };
 
 struct tlc4541_chip_info {
