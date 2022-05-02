@@ -29,7 +29,7 @@ struct adc128 {
 	struct regulator *reg;
 	struct mutex lock;
 
-	u8 buffer[2] ____cacheline_aligned;
+	u8 buffer[2] __aligned(IIO_ALIGN);
 };
 
 static int adc128_adc_conversion(struct adc128 *adc, u8 channel)
