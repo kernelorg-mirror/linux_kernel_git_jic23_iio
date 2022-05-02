@@ -48,7 +48,7 @@ struct ad8366_state {
 	 * DMA (thus cache coherency maintenance) requires the
 	 * transfer buffers to live in their own cache lines.
 	 */
-	unsigned char		data[2] ____cacheline_aligned;
+	unsigned char		data[2] __aligned(IIO_ALIGN);
 };
 
 static struct ad8366_info ad8366_infos[] = {
