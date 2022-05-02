@@ -121,7 +121,7 @@ struct ad5064_state {
 	union {
 		u8 i2c[3];
 		__be32 spi;
-	} data ____cacheline_aligned;
+	} data __aligned(IIO_ALIGN);
 };
 
 enum ad5064_type {
