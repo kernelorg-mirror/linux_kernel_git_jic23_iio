@@ -36,7 +36,7 @@ struct max11100_state {
 	 * DMA (thus cache coherency maintenance) requires the
 	 * transfer buffers to live in their own cache lines.
 	 */
-	u8 buffer[3] ____cacheline_aligned;
+	u8 buffer[3] __aligned(IIO_ALIGN);
 };
 
 static const struct iio_chan_spec max11100_channels[] = {
