@@ -120,7 +120,7 @@ struct ad7606_state {
 	 * transfer buffers to live in their own cache lines.
 	 * 16 * 16-bit samples + 64-bit timestamp
 	 */
-	unsigned short			data[20] ____cacheline_aligned;
+	unsigned short			data[20] __aligned(IIO_ALIGN);
 	__be16				d16[2];
 };
 
