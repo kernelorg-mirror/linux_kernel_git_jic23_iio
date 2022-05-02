@@ -94,7 +94,7 @@ struct ltc2688_state {
 	 * DMA (thus cache coherency maintenance) requires the
 	 * transfer buffers to live in their own cache lines.
 	 */
-	u8 tx_data[6] ____cacheline_aligned;
+	u8 tx_data[6] __aligned(IIO_ALIGN);
 	u8 rx_data[3];
 };
 
