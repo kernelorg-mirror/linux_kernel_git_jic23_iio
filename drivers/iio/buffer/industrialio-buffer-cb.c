@@ -104,7 +104,7 @@ error_free_cb_buff:
 	kfree(cb_buff);
 	return ERR_PTR(ret);
 }
-EXPORT_SYMBOL_GPL(iio_channel_get_all_cb);
+EXPORT_SYMBOL_NS_GPL(iio_channel_get_all_cb, IIO_CONSUMER);
 
 int iio_channel_cb_set_buffer_watermark(struct iio_cb_buffer *cb_buff,
 					size_t watermark)
@@ -115,42 +115,43 @@ int iio_channel_cb_set_buffer_watermark(struct iio_cb_buffer *cb_buff,
 
 	return 0;
 }
-EXPORT_SYMBOL_GPL(iio_channel_cb_set_buffer_watermark);
+EXPORT_SYMBOL_NS_GPL(iio_channel_cb_set_buffer_watermark, IIO_CONSUMER);
 
 int iio_channel_start_all_cb(struct iio_cb_buffer *cb_buff)
 {
 	return iio_update_buffers(cb_buff->indio_dev, &cb_buff->buffer,
 				  NULL);
 }
-EXPORT_SYMBOL_GPL(iio_channel_start_all_cb);
+EXPORT_SYMBOL_NS_GPL(iio_channel_start_all_cb, IIO_CONSUMER);
 
 void iio_channel_stop_all_cb(struct iio_cb_buffer *cb_buff)
 {
 	iio_update_buffers(cb_buff->indio_dev, NULL, &cb_buff->buffer);
 }
-EXPORT_SYMBOL_GPL(iio_channel_stop_all_cb);
+EXPORT_SYMBOL_NS_GPL(iio_channel_stop_all_cb, IIO_CONSUMER);
 
 void iio_channel_release_all_cb(struct iio_cb_buffer *cb_buff)
 {
 	iio_channel_release_all(cb_buff->channels);
 	iio_buffer_put(&cb_buff->buffer);
 }
-EXPORT_SYMBOL_GPL(iio_channel_release_all_cb);
+EXPORT_SYMBOL_NS_GPL(iio_channel_release_all_cb, IIO_CONSUMER);
 
 struct iio_channel
 *iio_channel_cb_get_channels(const struct iio_cb_buffer *cb_buffer)
 {
 	return cb_buffer->channels;
 }
-EXPORT_SYMBOL_GPL(iio_channel_cb_get_channels);
+EXPORT_SYMBOL_NS_GPL(iio_channel_cb_get_channels, IIO_CONSUMER);
 
 struct iio_dev
 *iio_channel_cb_get_iio_dev(const struct iio_cb_buffer *cb_buffer)
 {
 	return cb_buffer->indio_dev;
 }
-EXPORT_SYMBOL_GPL(iio_channel_cb_get_iio_dev);
+EXPORT_SYMBOL_NS_GPL(iio_channel_cb_get_iio_dev, IIO_CONSUMER);
 
 MODULE_AUTHOR("Jonathan Cameron <jic23@kernel.org>");
 MODULE_DESCRIPTION("Industrial I/O callback buffer");
 MODULE_LICENSE("GPL");
+MODULE_IMPORT_NS(IIO_CONSUMER);
