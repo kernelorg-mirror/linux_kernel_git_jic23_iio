@@ -240,3 +240,4 @@ MODULE_AUTHOR("Vincent Pelletier <plr.vincent@gmail.com>");
 MODULE_AUTHOR("Andy Shevchenko <andriy.shevchenko@linux.intel.com>");
 MODULE_DESCRIPTION("ADC driver for Basin Cove PMIC");
 MODULE_LICENSE("GPL v2");
+MODULE_IMPORT_NS(IIO_MACHINE);

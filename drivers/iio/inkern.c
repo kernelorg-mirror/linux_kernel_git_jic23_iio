@@ -67,7 +67,7 @@ error_ret:
 
 	return ret;
 }
-EXPORT_SYMBOL_GPL(iio_map_array_register);
+EXPORT_SYMBOL_NS_GPL(iio_map_array_register, IIO_MACHINE);
 
 /*
  * Remove all map entries associated with the given iio device
@@ -82,7 +82,7 @@ int iio_map_array_unregister(struct iio_dev *indio_dev)
 
 	return ret;
 }
-EXPORT_SYMBOL_GPL(iio_map_array_unregister);
+EXPORT_SYMBOL_NS_GPL(iio_map_array_unregister, IIO_MACHINE);
 
 static void iio_map_array_unregister_cb(void *indio_dev)
 {
@@ -99,7 +99,7 @@ int devm_iio_map_array_register(struct device *dev, struct iio_dev *indio_dev, s
 
 	return devm_add_action_or_reset(dev, iio_map_array_unregister_cb, indio_dev);
 }
-EXPORT_SYMBOL_GPL(devm_iio_map_array_register);
+EXPORT_SYMBOL_NS_GPL(devm_iio_map_array_register, IIO_MACHINE);
 
 static const struct iio_chan_spec
 *iio_chan_spec_from_name(const struct iio_dev *indio_dev, const char *name)

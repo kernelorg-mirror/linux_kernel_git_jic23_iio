@@ -206,3 +206,4 @@ module_platform_driver(mp2629_adc_driver);
 MODULE_AUTHOR("Saravanan Sekar <sravanhome@gmail.com>");
 MODULE_DESCRIPTION("MP2629 ADC driver");
 MODULE_LICENSE("GPL");
+MODULE_IMPORT_NS(IIO_MACHINE);
