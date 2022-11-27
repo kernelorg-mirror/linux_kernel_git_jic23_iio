@@ -32,7 +32,7 @@ struct surface3_ts_data {
 	struct input_dev *pen_input_dev;
 	int pen_tool;
 
-	u8 rd_buf[SURFACE3_PACKET_SIZE]		____cacheline_aligned;
+	u8 rd_buf[SURFACE3_PACKET_SIZE] __aligned(ARCH_KMALLOC_MINALIGN);
 };
 
 struct surface3_ts_data_finger {
