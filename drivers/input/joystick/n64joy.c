@@ -44,12 +44,12 @@ static const char *n64joy_phys[MAX_CONTROLLERS] = {
 };
 
 struct n64joy_priv {
-	u64 si_buf[8] ____cacheline_aligned;
 	struct timer_list timer;
 	struct mutex n64joy_mutex;
 	struct input_dev *n64joy_dev[MAX_CONTROLLERS];
 	u32 __iomem *reg_base;
 	u8 n64joy_opened;
+	u64 si_buf[8] __aligned(ARCH_KMALLOC_MINALIGN);
 };
 
 struct joydata {
@@ -129,7 +129,7 @@ static void n64joy_exec_pif(struct n64joy_priv *priv, const u64 in[8])
 	local_irq_restore(flags);
 }
 
-static const u64 polldata[] ____cacheline_aligned = {
+static const u64 polldata[] __aligned(ARCH_KMALLOC_MINALIGN) = {
 	0xff010401ffffffff,
 	0xff010401ffffffff,
 	0xff010401ffffffff,
@@ -222,7 +222,7 @@ static void n64joy_close(struct input_dev *dev)
 	mutex_unlock(&priv->n64joy_mutex);
 }
 
-static const u64 __initconst scandata[] ____cacheline_aligned = {
+static const u64 __initconst scandata[] __aligned(ARCH_KMALLOC_MINALIGN) = {
 	0xff010300ffffffff,
 	0xff010300ffffffff,
 	0xff010300ffffffff,
