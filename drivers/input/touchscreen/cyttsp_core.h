@@ -131,7 +131,7 @@ struct cyttsp {
 	u8 lp_intrvl;
 	u8 *bl_keys;
 
-	u8 xfer_buf[] ____cacheline_aligned;
+	u8 xfer_buf[] __aligned(ARCH_KMALLOC_MINALIGN);
 };
 
 struct cyttsp *cyttsp_probe(const struct cyttsp_bus_ops *bus_ops,
