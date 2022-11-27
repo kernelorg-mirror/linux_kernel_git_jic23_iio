@@ -71,7 +71,7 @@ struct atmel_captouch_device {
 	u32 num_btn;
 	u32 keycodes[MAX_NUM_OF_BUTTONS];
 	u8 prev_btn;
-	u8 xfer_buf[8] ____cacheline_aligned;
+	u8 xfer_buf[8] __aligned(ARCH_KMALLOC_MINALIGN);
 };
 
 /*
