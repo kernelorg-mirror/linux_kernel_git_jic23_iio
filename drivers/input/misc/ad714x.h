@@ -41,7 +41,7 @@ struct ad714x_chip {
 	unsigned product;
 	unsigned version;
 
-	__be16 xfer_buf[16] ____cacheline_aligned;
+	__be16 xfer_buf[16] __aligned(ARCH_KMALLOC_MINALIGN);
 
 };
 
