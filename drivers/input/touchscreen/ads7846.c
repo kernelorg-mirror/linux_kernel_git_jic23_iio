@@ -337,7 +337,7 @@ struct ser_req {
 	 * DMA (thus cache coherency maintenance) requires the
 	 * transfer buffers to live in their own cache lines.
 	 */
-	__be16 sample ____cacheline_aligned;
+	__be16 sample __aligned(ARCH_KMALLOC_MINALIGN);
 };
 
 struct ads7845_ser_req {
@@ -348,7 +348,7 @@ struct ads7845_ser_req {
 	 * DMA (thus cache coherency maintenance) requires the
 	 * transfer buffers to live in their own cache lines.
 	 */
-	u8 sample[3] ____cacheline_aligned;
+	u8 sample[3] __aligned(ARCH_KMALLOC_MINALIGN);
 };
 
 static int ads7846_read12_ser(struct device *dev, unsigned command)
