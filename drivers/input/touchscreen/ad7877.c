@@ -150,7 +150,7 @@ struct ser_req {
 	 * DMA (thus cache coherency maintenance) requires the
 	 * transfer buffers to live in their own cache lines.
 	 */
-	u16 sample ____cacheline_aligned;
+	u16 sample __aligned(ARCH_KMALLOC_MINALIGN);
 };
 
 struct ad7877 {
@@ -189,7 +189,7 @@ struct ad7877 {
 	 * DMA (thus cache coherency maintenance) requires the
 	 * transfer buffers to live in their own cache lines.
 	 */
-	u16 conversion_data[AD7877_NR_SENSE] ____cacheline_aligned;
+	u16 conversion_data[AD7877_NR_SENSE] __aligned(ARCH_KMALLOC_MINALIGN);
 };
 
 static bool gpio3;
