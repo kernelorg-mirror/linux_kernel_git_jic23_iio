@@ -65,8 +65,8 @@ struct psxpad {
 	bool motor2enable;
 	u8 motor1level;
 	u8 motor2level;
-	u8 sendbuf[0x20] ____cacheline_aligned;
-	u8 response[sizeof(PSX_CMD_POLL)] ____cacheline_aligned;
+	u8 sendbuf[0x20] __aligned(ARCH_KMALLOC_MINALIGN);
+	u8 response[sizeof(PSX_CMD_POLL)] __aligned(ARCH_KMALLOC_MINALIGN);
 };
 
 static int psxpad_command(struct psxpad *pad, const u8 sendcmdlen)
