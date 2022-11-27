@@ -227,7 +227,6 @@ static void qt1070_remove(struct i2c_client *client)
 	kfree(data);
 }
 
-#ifdef CONFIG_PM_SLEEP
 static int qt1070_suspend(struct device *dev)
 {
 	struct i2c_client *client = to_i2c_client(dev);
@@ -249,9 +248,8 @@ static int qt1070_resume(struct device *dev)
 
 	return 0;
 }
-#endif
 
-static SIMPLE_DEV_PM_OPS(qt1070_pm_ops, qt1070_suspend, qt1070_resume);
+static DEFINE_SIMPLE_DEV_PM_OPS(qt1070_pm_ops, qt1070_suspend, qt1070_resume);
 
 static const struct i2c_device_id qt1070_id[] = {
 	{ "qt1070", 0 },
@@ -271,7 +269,7 @@ static struct i2c_driver qt1070_driver = {
 	.driver	= {
 		.name	= "qt1070",
 		.of_match_table = of_match_ptr(qt1070_of_match),
-		.pm	= &qt1070_pm_ops,
+		.pm	= pm_sleep_ptr(&qt1070_pm_ops),
 	},
 	.id_table	= qt1070_id,
 	.probe		= qt1070_probe,
