@@ -184,7 +184,7 @@ struct elants_data {
 	bool keep_power_in_suspend;
 
 	/* Must be last to be used for DMA operations */
-	u8 buf[MAX_PACKET_SIZE] ____cacheline_aligned;
+	u8 buf[MAX_PACKET_SIZE] __aligned(ARCH_KMALLOC_MINALIGN);
 };
 
 static int elants_i2c_send(struct i2c_client *client,
