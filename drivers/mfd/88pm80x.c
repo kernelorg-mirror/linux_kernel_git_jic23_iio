@@ -129,6 +129,30 @@ int pm80x_deinit(void)
 }
 EXPORT_SYMBOL_GPL(pm80x_deinit);
 
+static inline int pm80x_dev_suspend(struct device *dev)
+{
+	struct platform_device *pdev = to_platform_device(dev);
+	struct pm80x_chip *chip = dev_get_drvdata(pdev->dev.parent);
+	int irq = platform_get_irq(pdev, 0);
+
+	if (device_may_wakeup(dev))
+		set_bit(irq, &chip->wu_flag);
+
+	return 0;
+}
+
+static inline int pm80x_dev_resume(struct device *dev)
+{
+	struct platform_device *pdev = to_platform_device(dev);
+	struct pm80x_chip *chip = dev_get_drvdata(pdev->dev.parent);
+	int irq = platform_get_irq(pdev, 0);
+
+	if (device_may_wakeup(dev))
+		clear_bit(irq, &chip->wu_flag);
+
+	return 0;
+}
+
 static int pm80x_suspend(struct device *dev)
 {
 	struct i2c_client *client = to_i2c_client(dev);
@@ -154,6 +178,7 @@ static int pm80x_resume(struct device *dev)
 }
 
 EXPORT_GPL_SIMPLE_DEV_PM_OPS(pm80x_pm_ops, pm80x_suspend, pm80x_resume);
+EXPORT_GPL_SIMPLE_DEV_PM_OPS(pm80x_dev_pm_ops, pm80x_dev_suspend, pm80x_dev_resume);
 
 MODULE_DESCRIPTION("I2C Driver for Marvell 88PM80x");
 MODULE_AUTHOR("Qiao Zhou <zhouqiao@marvell.com>");

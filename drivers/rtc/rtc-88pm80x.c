@@ -222,20 +222,6 @@ static const struct rtc_class_ops pm80x_rtc_ops = {
 	.alarm_irq_enable = pm80x_rtc_alarm_irq_enable,
 };
 
-#ifdef CONFIG_PM_SLEEP
-static int pm80x_rtc_suspend(struct device *dev)
-{
-	return pm80x_dev_suspend(dev);
-}
-
-static int pm80x_rtc_resume(struct device *dev)
-{
-	return pm80x_dev_resume(dev);
-}
-#endif
-
-static SIMPLE_DEV_PM_OPS(pm80x_rtc_pm_ops, pm80x_rtc_suspend, pm80x_rtc_resume);
-
 static int pm80x_rtc_probe(struct platform_device *pdev)
 {
 	struct pm80x_chip *chip = dev_get_drvdata(pdev->dev.parent);
@@ -327,7 +313,7 @@ static int pm80x_rtc_remove(struct platform_device *pdev)
 static struct platform_driver pm80x_rtc_driver = {
 	.driver = {
 		   .name = "88pm80x-rtc",
-		   .pm = &pm80x_rtc_pm_ops,
+		   .pm = pm_sleep_ptr(&pm80x_dev_pm_ops),
 		   },
 	.probe = pm80x_rtc_probe,
 	.remove = pm80x_rtc_remove,

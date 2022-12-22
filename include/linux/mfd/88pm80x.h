@@ -339,31 +339,7 @@ static inline void pm80x_free_irq(struct pm80x_chip *pm80x, int irq, void *data)
 	free_irq(regmap_irq_get_virq(pm80x->irq_data, irq), data);
 }
 
-#ifdef CONFIG_PM
-static inline int pm80x_dev_suspend(struct device *dev)
-{
-	struct platform_device *pdev = to_platform_device(dev);
-	struct pm80x_chip *chip = dev_get_drvdata(pdev->dev.parent);
-	int irq = platform_get_irq(pdev, 0);
-
-	if (device_may_wakeup(dev))
-		set_bit(irq, &chip->wu_flag);
-
-	return 0;
-}
-
-static inline int pm80x_dev_resume(struct device *dev)
-{
-	struct platform_device *pdev = to_platform_device(dev);
-	struct pm80x_chip *chip = dev_get_drvdata(pdev->dev.parent);
-	int irq = platform_get_irq(pdev, 0);
-
-	if (device_may_wakeup(dev))
-		clear_bit(irq, &chip->wu_flag);
-
-	return 0;
-}
-#endif
+extern const struct dev_pm_ops pm80x_dev_pm_ops;
 
 extern int pm80x_init(struct i2c_client *client);
 extern int pm80x_deinit(void);
