@@ -978,7 +978,6 @@ static int pm860x_battery_probe(struct platform_device *pdev)
 	return 0;
 }
 
-#ifdef CONFIG_PM_SLEEP
 static int pm860x_battery_suspend(struct device *dev)
 {
 	struct platform_device *pdev = to_platform_device(dev);
@@ -998,15 +997,14 @@ static int pm860x_battery_resume(struct device *dev)
 		chip->wakeup_flag &= ~(1 << PM8607_IRQ_CC);
 	return 0;
 }
-#endif
 
-static SIMPLE_DEV_PM_OPS(pm860x_battery_pm_ops,
-			pm860x_battery_suspend, pm860x_battery_resume);
+static DEFINE_SIMPLE_DEV_PM_OPS(pm860x_battery_pm_ops,
+				pm860x_battery_suspend, pm860x_battery_resume);
 
 static struct platform_driver pm860x_battery_driver = {
 	.driver = {
 		   .name = "88pm860x-battery",
-		   .pm = &pm860x_battery_pm_ops,
+		   .pm = pm_sleep_ptr(&pm860x_battery_pm_ops),
 	},
 	.probe = pm860x_battery_probe,
 };
