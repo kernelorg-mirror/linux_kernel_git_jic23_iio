@@ -137,7 +137,7 @@ static int opt4001_als_time_to_index(const u32 als_integration_time)
 {
 	int i;
 
-	for (i = 0; i < ARRAY_SIZE(opt4001_int_time_available); i++) {
+	for (i = 0; i < ARRAY_SIZE(opt4001_int_time_available) / 2; i++) {
 		if (als_integration_time == opt4001_int_time_available[i][1])
 			return i;
 	}
