@@ -6,14 +6,17 @@
  * Copyright (C) 2020 Analog Devices, Inc.
  */
 
+#include <linux/array_size.h>
 #include <linux/bitfield.h>
 #include <linux/bitops.h>
 #include <linux/cleanup.h>
 #include <linux/delay.h>
 #include <linux/device.h>
-#include <linux/kernel.h>
+#include <linux/errno.h>
 #include <linux/module.h>
+#include <linux/mutex.h>
 #include <linux/spi/spi.h>
+#include <linux/types.h>
 
 #include <linux/iio/buffer.h>
 #include <linux/iio/iio.h>
