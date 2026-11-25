@@ -70,12 +70,14 @@ config MAX5487
 	  module will be called max5487.
 
 config MCP4018
-	tristate "Microchip MCP4017/18/19 Digital Potentiometer driver"
+	tristate "Microchip MCP4018 and compatible Digital Potentiometer driver"
 	depends on I2C
 	help
-	  Say yes here to build support for the Microchip
-	  MCP4017, MCP4018, MCP4019
-	  digital potentiometer chips.
+	  Say yes here to build support for the following digital
+	  potentiometers and rheostats:
+
+	  - Analog Devices AD5246
+	  - Microchip MCP4017, MCP4018, MCP4019
 
 	  To compile this driver as a module, choose M here: the
 	  module will be called mcp4018.

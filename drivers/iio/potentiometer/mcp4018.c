@@ -1,12 +1,15 @@
 // SPDX-License-Identifier: GPL-2.0
 /*
- * Industrial I/O driver for Microchip digital potentiometers
+ * Industrial I/O driver for Microchip MCP4018 and compatible digital
+ * potentiometers
  * Copyright (c) 2018  Axentia Technologies AB
  * Author: Peter Rosin <peda@axentia.se>
  *
  * Datasheet: http://www.microchip.com/downloads/en/DeviceDoc/22147a.pdf
+ * Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/AD5246.pdf
  *
  * DEVID	#Wipers	#Positions	Resistor Opts (kOhm)
+ * ad5246	1	128		5, 10, 50, 100
  * mcp4017	1	128		5, 10, 50, 100
  * mcp4018	1	128		5, 10, 50, 100
  * mcp4019	1	128		5, 10, 50, 100
@@ -31,6 +34,10 @@ struct mcp4018_cfg {
 };
 
 enum mcp4018_type {
+	AD5246_005,
+	AD5246_010,
+	AD5246_050,
+	AD5246_100,
 	MCP4018_502,
 	MCP4018_103,
 	MCP4018_503,
@@ -38,6 +45,11 @@ enum mcp4018_type {
 };
 
 static const struct mcp4018_cfg mcp4018_cfg[] = {
+	/* The AD5246's resistance is D / 128 of the end-to-end value */
+	[AD5246_005] = { .kohms =   5, .div = 128, },
+	[AD5246_010] = { .kohms =  10, .div = 128, },
+	[AD5246_050] = { .kohms =  50, .div = 128, },
+	[AD5246_100] = { .kohms = 100, .div = 128, },
 	[MCP4018_502] = { .kohms =   5, .div = MCP4018_WIPER_MAX, },
 	[MCP4018_103] = { .kohms =  10, .div = MCP4018_WIPER_MAX, },
 	[MCP4018_503] = { .kohms =  50, .div = MCP4018_WIPER_MAX, },
@@ -130,6 +142,10 @@ static const struct iio_info mcp4018_info = {
 }
 
 static const struct i2c_device_id mcp4018_id[] = {
+	MCP4018_ID_TABLE("ad5246-005", AD5246_005),
+	MCP4018_ID_TABLE("ad5246-010", AD5246_010),
+	MCP4018_ID_TABLE("ad5246-050", AD5246_050),
+	MCP4018_ID_TABLE("ad5246-100", AD5246_100),
 	MCP4018_ID_TABLE("mcp4017-502", MCP4018_502),
 	MCP4018_ID_TABLE("mcp4017-103", MCP4018_103),
 	MCP4018_ID_TABLE("mcp4017-503", MCP4018_503),
@@ -152,6 +168,10 @@ MODULE_DEVICE_TABLE(i2c, mcp4018_id);
 }
 
 static const struct of_device_id mcp4018_of_match[] = {
+	MCP4018_COMPATIBLE("adi,ad5246-005", AD5246_005),
+	MCP4018_COMPATIBLE("adi,ad5246-010", AD5246_010),
+	MCP4018_COMPATIBLE("adi,ad5246-050", AD5246_050),
+	MCP4018_COMPATIBLE("adi,ad5246-100", AD5246_100),
 	MCP4018_COMPATIBLE("microchip,mcp4017-502", MCP4018_502),
 	MCP4018_COMPATIBLE("microchip,mcp4017-103", MCP4018_103),
 	MCP4018_COMPATIBLE("microchip,mcp4017-503", MCP4018_503),
@@ -214,5 +234,5 @@ static struct i2c_driver mcp4018_driver = {
 module_i2c_driver(mcp4018_driver);
 
 MODULE_AUTHOR("Peter Rosin <peda@axentia.se>");
-MODULE_DESCRIPTION("MCP4018 digital potentiometer");
+MODULE_DESCRIPTION("Microchip MCP4018 and compatible Digital Potentiometer driver");
 MODULE_LICENSE("GPL v2");
