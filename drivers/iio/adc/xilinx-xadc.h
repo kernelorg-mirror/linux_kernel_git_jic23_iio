@@ -99,22 +99,16 @@ static inline int _xadc_write_adc_reg(struct xadc *xadc, unsigned int reg, u16 v
 
 static inline int xadc_read_adc_reg(struct xadc *xadc, unsigned int reg, u16 *val)
 {
-	int ret;
+	guard(mutex)(&xadc->mutex);
 
-	mutex_lock(&xadc->mutex);
-	ret = _xadc_read_adc_reg(xadc, reg, val);
-	mutex_unlock(&xadc->mutex);
-	return ret;
+	return _xadc_read_adc_reg(xadc, reg, val);
 }
 
 static inline int xadc_write_adc_reg(struct xadc *xadc, unsigned int reg, u16 val)
 {
-	int ret;
+	guard(mutex)(&xadc->mutex);
 
-	mutex_lock(&xadc->mutex);
-	ret = _xadc_write_adc_reg(xadc, reg, val);
-	mutex_unlock(&xadc->mutex);
-	return ret;
+	return _xadc_write_adc_reg(xadc, reg, val);
 }
 
 /* XADC hardmacro register definitions */

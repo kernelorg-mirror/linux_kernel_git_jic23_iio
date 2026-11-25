@@ -578,13 +578,9 @@ static int _xadc_update_adc_reg(struct xadc *xadc, unsigned int reg, u16 mask, u
 
 static int xadc_update_adc_reg(struct xadc *xadc, unsigned int reg, u16 mask, u16 val)
 {
-	int ret;
+	guard(mutex)(&xadc->mutex);
 
-	mutex_lock(&xadc->mutex);
-	ret = _xadc_update_adc_reg(xadc, reg, mask, val);
-	mutex_unlock(&xadc->mutex);
-
-	return ret;
+	return _xadc_update_adc_reg(xadc, reg, mask, val);
 }
 
 static unsigned long xadc_get_dclk_rate(struct xadc *xadc)
@@ -672,13 +668,12 @@ static int xadc_trigger_set_state(struct iio_trigger *trigger, bool state)
 	unsigned int val;
 	int ret = 0;
 
-	mutex_lock(&xadc->mutex);
+	guard(mutex)(&xadc->mutex);
 
 	if (state) {
 		/* Only one of the two triggers can be active at a time. */
 		if (xadc->trigger != NULL) {
-			ret = -EBUSY;
-			goto err_out;
+			return -EBUSY;
 		} else {
 			xadc->trigger = trigger;
 			if (trigger == xadc->convst_trigger)
@@ -688,7 +683,7 @@ static int xadc_trigger_set_state(struct iio_trigger *trigger, bool state)
 		}
 		ret = _xadc_update_adc_reg(xadc, XADC_REG_CONF1, XADC_CONF0_EC, convst);
 		if (ret)
-			goto err_out;
+			return ret;
 	} else {
 		xadc->trigger = NULL;
 	}
@@ -703,10 +698,7 @@ static int xadc_trigger_set_state(struct iio_trigger *trigger, bool state)
 		xadc_write_reg(xadc, XADC_AXI_REG_IPIER, val);
 	}
 
-err_out:
-	mutex_unlock(&xadc->mutex);
-
-	return ret;
+	return 0;
 }
 
 static const struct iio_trigger_ops xadc_trigger_ops = {

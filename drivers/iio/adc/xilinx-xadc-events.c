@@ -129,7 +129,7 @@ int xadc_write_event_config(struct iio_dev *indio_dev, const struct iio_chan_spe
 	u16 cfg, old_cfg;
 	int ret;
 
-	mutex_lock(&xadc->mutex);
+	guard(mutex)(&xadc->mutex);
 
 	if (state)
 		xadc->alarm_mask |= alarm;
@@ -140,7 +140,7 @@ int xadc_write_event_config(struct iio_dev *indio_dev, const struct iio_chan_spe
 
 	ret = _xadc_read_adc_reg(xadc, XADC_REG_CONF1, &cfg);
 	if (ret)
-		goto err_out;
+		return ret;
 
 	old_cfg = cfg;
 	cfg |= XADC_CONF1_ALARM_MASK;
@@ -148,12 +148,9 @@ int xadc_write_event_config(struct iio_dev *indio_dev, const struct iio_chan_spe
 	cfg &= ~((xadc->alarm_mask & 0x08) >> 3); /* ot */
 	cfg &= ~((xadc->alarm_mask & 0x07) << 1); /* temp, vccint, vccaux */
 	if (old_cfg != cfg)
-		ret = _xadc_write_adc_reg(xadc, XADC_REG_CONF1, cfg);
+		return _xadc_write_adc_reg(xadc, XADC_REG_CONF1, cfg);
 
-err_out:
-	mutex_unlock(&xadc->mutex);
-
-	return ret;
+	return 0;
 }
 
 int xadc_read_event_value(struct iio_dev *indio_dev, const struct iio_chan_spec *chan,
@@ -194,7 +191,7 @@ int xadc_write_event_value(struct iio_dev *indio_dev, const struct iio_chan_spec
 	if (val < 0 || val > 0xffff)
 		return -EINVAL;
 
-	mutex_lock(&xadc->mutex);
+	guard(mutex)(&xadc->mutex);
 
 	switch (info) {
 	case IIO_EV_INFO_VALUE:
@@ -204,7 +201,6 @@ int xadc_write_event_value(struct iio_dev *indio_dev, const struct iio_chan_spec
 		xadc->temp_hysteresis = val;
 		break;
 	default:
-		mutex_unlock(&xadc->mutex);
 		return -EINVAL;
 	}
 
@@ -230,14 +226,11 @@ int xadc_write_event_value(struct iio_dev *indio_dev, const struct iio_chan_spec
 		ret = _xadc_write_adc_reg(xadc, XADC_REG_THRESHOLD(offset + 4),
 					  xadc->threshold[offset + 4]);
 		if (ret)
-			goto out_unlock;
+			return ret;
 	}
 
 	if (info == IIO_EV_INFO_VALUE)
-		ret = _xadc_write_adc_reg(xadc, XADC_REG_THRESHOLD(offset), val);
+		return _xadc_write_adc_reg(xadc, XADC_REG_THRESHOLD(offset), val);
 
-out_unlock:
-	mutex_unlock(&xadc->mutex);
-
-	return ret;
+	return 0;
 }
