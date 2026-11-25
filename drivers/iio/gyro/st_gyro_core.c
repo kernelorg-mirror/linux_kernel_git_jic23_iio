@@ -7,11 +7,14 @@
  * Denis Ciocca <denis.ciocca@st.com>
  */
 
-#include <linux/kernel.h>
+#include <linux/array_size.h>
+#include <linux/bits.h>
+#include <linux/errno.h>
+#include <linux/interrupt.h>
 #include <linux/module.h>
 #include <linux/mutex.h>
-#include <linux/interrupt.h>
 #include <linux/sysfs.h>
+
 #include <linux/iio/iio.h>
 #include <linux/iio/sysfs.h>
 #include <linux/iio/trigger.h>
