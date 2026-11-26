@@ -20,6 +20,7 @@
 
 #include <linux/bitfield.h>
 #include <linux/cleanup.h>
+#include <linux/delay.h>
 #include <linux/devm-helpers.h>
 #include <linux/i2c.h>
 #include <linux/interrupt.h>
@@ -103,7 +104,7 @@
 #define DPS310_DRAIN_MAX_MS	(2 * MSEC_PER_SEC)
 
 /* Make sure sleep time is <= 30ms for usleep_range */
-#define DPS310_POLL_SLEEP_US(t)		min(30000, (t) / 8)
+#define DPS310_POLL_SLEEP_US(t)		min(30 * USEC_PER_MSEC, (t) / 8)
 /* A period plus a measurement time; silently handle error in rate value */
 #define DPS310_POLL_TIMEOUT_US(rc)	(2 * USEC_PER_SEC / max(rc, 1))
 
@@ -369,8 +370,9 @@ static int dps310_startup(struct dps310_data *data)
 	 * Calibration coefficients required for reporting temperature.
 	 * They are available 40ms after the device has started
 	 */
-	rc = regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG, ready,
-				      ready & DPS310_COEF_RDY, 10000, 40000);
+	rc = regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG,
+				      ready, ready & DPS310_COEF_RDY,
+				      10 * USEC_PER_MSEC, 40 * USEC_PER_MSEC);
 	if (rc)
 		return rc;
 
@@ -558,7 +560,7 @@ static int dps310_reset_wait(struct dps310_data *data)
 		return rc;
 
 	/* Wait for device chip access: 15ms in specification */
-	usleep_range(15000, 55000);
+	msleep(20);
 	return 0;
 }
 
