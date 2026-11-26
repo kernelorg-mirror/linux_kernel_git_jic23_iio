@@ -1633,13 +1633,7 @@ static int dps310_probe(struct i2c_client *client)
 			return rc;
 	}
 
-	rc = devm_iio_device_register(dev, iio);
-	if (rc)
-		return rc;
-
-	i2c_set_clientdata(client, iio);
-
-	return 0;
+	return devm_iio_device_register(dev, iio);
 }
 
 static const struct i2c_device_id dps310_id[] = {
