@@ -848,7 +848,7 @@ static int dps310_calculate_pressure(struct dps310_data *data, int *val)
 	if (pressure < 0)
 		return -ERANGE;
 
-	*val = (int)min_t(s64, pressure, INT_MAX);
+	*val = min(pressure, INT_MAX);
 
 	return 0;
 }
