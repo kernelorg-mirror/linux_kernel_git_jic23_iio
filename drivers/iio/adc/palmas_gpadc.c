@@ -16,6 +16,7 @@
 #include <linux/delay.h>
 #include <linux/pm.h>
 #include <linux/mfd/palmas.h>
+#include <linux/cleanup.h>
 #include <linux/completion.h>
 #include <linux/of.h>
 #include <linux/iio/events.h>
@@ -538,50 +539,50 @@ static int palmas_gpadc_get_low_threshold_raw(struct palmas_gpadc *adc,
 						     min_offset_error);
 }
 
+static int palmas_gpadc_read_raw_locked(struct palmas_gpadc *adc, int adc_chan,
+					int *val, long mask)
+{
+	int ret;
+
+	ret = palmas_gpadc_read_prepare(adc, adc_chan);
+	if (ret < 0)
+		goto done;
+
+	ret = palmas_gpadc_start_conversion(adc, adc_chan);
+	if (ret < 0) {
+		dev_err(adc->dev, "ADC start conversion failed\n");
+		goto done;
+	}
+
+	if (mask == IIO_CHAN_INFO_PROCESSED)
+		ret = palmas_gpadc_get_calibrated_code(adc, adc_chan, ret);
+
+	*val = ret;
+	ret = IIO_VAL_INT;
+
+done:
+	palmas_gpadc_read_done(adc, adc_chan);
+	return ret;
+}
+
 static int palmas_gpadc_read_raw(struct iio_dev *indio_dev,
 	struct iio_chan_spec const *chan, int *val, int *val2, long mask)
 {
 	struct  palmas_gpadc *adc = iio_priv(indio_dev);
 	int adc_chan = chan->channel;
-	int ret = 0;
 
 	if (adc_chan >= PALMAS_ADC_CH_MAX)
 		return -EINVAL;
 
-	mutex_lock(&adc->lock);
+	guard(mutex)(&adc->lock);
 
 	switch (mask) {
 	case IIO_CHAN_INFO_RAW:
 	case IIO_CHAN_INFO_PROCESSED:
-		ret = palmas_gpadc_read_prepare(adc, adc_chan);
-		if (ret < 0)
-			goto out;
-
-		ret = palmas_gpadc_start_conversion(adc, adc_chan);
-		if (ret < 0) {
-			dev_err(adc->dev,
-			"ADC start conversion failed\n");
-			goto out;
-		}
-
-		if (mask == IIO_CHAN_INFO_PROCESSED)
-			ret = palmas_gpadc_get_calibrated_code(
-							adc, adc_chan, ret);
-
-		*val = ret;
-
-		ret = IIO_VAL_INT;
-		goto out;
+		return palmas_gpadc_read_raw_locked(adc, adc_chan, val, mask);
 	}
 
-	mutex_unlock(&adc->lock);
-	return ret;
-
-out:
-	palmas_gpadc_read_done(adc, adc_chan);
-	mutex_unlock(&adc->lock);
-
-	return ret;
+	return 0;
 }
 
 static int palmas_gpadc_read_event_config(struct iio_dev *indio_dev,
@@ -591,19 +592,16 @@ static int palmas_gpadc_read_event_config(struct iio_dev *indio_dev,
 {
 	struct palmas_gpadc *adc = iio_priv(indio_dev);
 	int adc_chan = chan->channel;
-	int ret = 0;
 
 	if (adc_chan >= PALMAS_ADC_CH_MAX || type != IIO_EV_TYPE_THRESH)
 		return -EINVAL;
 
-	mutex_lock(&adc->lock);
+	guard(mutex)(&adc->lock);
 
 	if (palmas_gpadc_get_event(adc, adc_chan, dir))
-		ret = 1;
+		return 1;
 
-	mutex_unlock(&adc->lock);
-
-	return ret;
+	return 0;
 }
 
 static int palmas_adc_configure_events(struct palmas_gpadc *adc);
@@ -680,21 +678,16 @@ static int palmas_gpadc_write_event_config(struct iio_dev *indio_dev,
 {
 	struct palmas_gpadc *adc = iio_priv(indio_dev);
 	int adc_chan = chan->channel;
-	int ret;
 
 	if (adc_chan >= PALMAS_ADC_CH_MAX || type != IIO_EV_TYPE_THRESH)
 		return -EINVAL;
 
-	mutex_lock(&adc->lock);
+	guard(mutex)(&adc->lock);
 
 	if (state)
-		ret = palmas_gpadc_enable_event_config(adc, chan, dir);
-	else
-		ret = palmas_gpadc_disable_event_config(adc, chan, dir);
+		return palmas_gpadc_enable_event_config(adc, chan, dir);
 
-	mutex_unlock(&adc->lock);
-
-	return ret;
+	return palmas_gpadc_disable_event_config(adc, chan, dir);
 }
 
 static int palmas_gpadc_read_event_value(struct iio_dev *indio_dev,
@@ -706,28 +699,21 @@ static int palmas_gpadc_read_event_value(struct iio_dev *indio_dev,
 {
 	struct palmas_gpadc *adc = iio_priv(indio_dev);
 	int adc_chan = chan->channel;
-	int ret;
 
 	if (adc_chan >= PALMAS_ADC_CH_MAX || type != IIO_EV_TYPE_THRESH)
 		return -EINVAL;
 
-	mutex_lock(&adc->lock);
+	guard(mutex)(&adc->lock);
 
 	switch (info) {
 	case IIO_EV_INFO_VALUE:
 		*val = (dir == IIO_EV_DIR_RISING) ?
 			adc->thresholds[adc_chan].high :
 			adc->thresholds[adc_chan].low;
-		ret = IIO_VAL_INT;
-		break;
+		return IIO_VAL_INT;
 	default:
-		ret = -EINVAL;
-		break;
+		return -EINVAL;
 	}
-
-	mutex_unlock(&adc->lock);
-
-	return ret;
 }
 
 static int palmas_gpadc_write_event_value(struct iio_dev *indio_dev,
@@ -739,19 +725,18 @@ static int palmas_gpadc_write_event_value(struct iio_dev *indio_dev,
 {
 	struct palmas_gpadc *adc = iio_priv(indio_dev);
 	int adc_chan = chan->channel;
-	int old;
-	int ret;
 
 	if (adc_chan >= PALMAS_ADC_CH_MAX || type != IIO_EV_TYPE_THRESH)
 		return -EINVAL;
 
-	mutex_lock(&adc->lock);
+	guard(mutex)(&adc->lock);
+
 	switch (info) {
-	case IIO_EV_INFO_VALUE:
-		if (val < 0 || val > 0xFFF) {
-			ret = -EINVAL;
-			goto out_unlock;
-		}
+	case IIO_EV_INFO_VALUE: {
+		int old;
+
+		if (val < 0 || val > 0xFFF)
+			return -EINVAL;
 		if (dir == IIO_EV_DIR_RISING) {
 			old = adc->thresholds[adc_chan].high;
 			adc->thresholds[adc_chan].high = val;
@@ -759,20 +744,15 @@ static int palmas_gpadc_write_event_value(struct iio_dev *indio_dev,
 			old = adc->thresholds[adc_chan].low;
 			adc->thresholds[adc_chan].low = val;
 		}
-		ret = 0;
-		break;
-	default:
-		ret = -EINVAL;
-		goto out_unlock;
+
+		if (val != old && palmas_gpadc_get_event(adc, adc_chan, dir))
+			return palmas_gpadc_reconfigure_event_channels(adc);
+
+		return 0;
 	}
-
-	if (val != old && palmas_gpadc_get_event(adc, adc_chan, dir))
-		ret = palmas_gpadc_reconfigure_event_channels(adc);
-
-out_unlock:
-	mutex_unlock(&adc->lock);
-
-	return ret;
+	default:
+		return -EINVAL;
+	}
 }
 
 static const struct iio_info palmas_gpadc_iio_info = {
