@@ -33,6 +33,7 @@
 #include <linux/slab.h>
 #include <linux/time.h>
 #include <linux/unaligned.h>
+#include <linux/units.h>
 #include <linux/workqueue.h>
 
 #include <linux/iio/buffer.h>
@@ -895,13 +896,13 @@ static int dps310_read_pressure(struct dps310_data *data, int *val, int *val2,
 		if (rc)
 			return rc;
 
-		*val2 = 1000; /* Convert Pa to KPa per IIO ABI */
+		*val2 = KILO; /* Convert Pa to KPa per IIO ABI */
 		return IIO_VAL_FRACTIONAL;
 
 	case IIO_CHAN_INFO_SCALE:
 		/* The raw value is in Pa, the ABI wants kPa */
 		*val = 1;
-		*val2 = 1000;
+		*val2 = KILO;
 		return IIO_VAL_FRACTIONAL;
 
 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
