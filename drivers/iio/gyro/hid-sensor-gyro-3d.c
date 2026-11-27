@@ -308,7 +308,7 @@ static int hid_gyro_3d_probe(struct platform_device *pdev)
 
 	ret = devm_hid_sensor_setup_trigger(dev, indio_dev, name,
 					    &gyro_state->common_attributes);
-	if (ret < 0)
+	if (ret)
 		return ret;
 
 	gyro_state->callbacks.send_event = gyro_3d_proc_event;

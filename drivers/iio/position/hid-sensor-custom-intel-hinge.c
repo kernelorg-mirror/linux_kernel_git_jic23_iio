@@ -309,7 +309,7 @@ static int hid_hinge_probe(struct platform_device *pdev)
 	atomic_set(&st->common_attributes.data_ready, 0);
 	ret = devm_hid_sensor_setup_trigger(dev, indio_dev, indio_dev->name,
 					    &st->common_attributes);
-	if (ret < 0)
+	if (ret)
 		return ret;
 
 	st->callbacks.send_event = hinge_proc_event;

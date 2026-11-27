@@ -496,7 +496,7 @@ static int hid_magn_3d_probe(struct platform_device *pdev)
 
 	ret = devm_hid_sensor_setup_trigger(dev, indio_dev, name,
 					    &magn_state->magn_flux_attributes);
-	if (ret < 0)
+	if (ret)
 		return ret;
 
 	magn_state->callbacks.send_event = magn_3d_proc_event;

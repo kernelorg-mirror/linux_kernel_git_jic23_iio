@@ -409,7 +409,7 @@ static int hid_als_probe(struct platform_device *pdev)
 
 	ret = devm_hid_sensor_setup_trigger(dev, indio_dev, name,
 					    &als_state->common_attributes);
-	if (ret < 0)
+	if (ret)
 		return ret;
 
 	als_state->callbacks.send_event = als_proc_event;
