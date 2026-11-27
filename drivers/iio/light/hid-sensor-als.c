@@ -417,7 +417,7 @@ static int hid_als_probe(struct platform_device *pdev)
 	als_state->callbacks.pdev = pdev;
 	ret = devm_sensor_hub_register_callback(dev, hsdev, hsdev->usage,
 						&als_state->callbacks);
-	if (ret < 0)
+	if (ret)
 		return ret;
 
 	return devm_iio_device_register(dev, indio_dev);

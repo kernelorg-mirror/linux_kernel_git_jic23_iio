@@ -380,7 +380,7 @@ static int hid_accel_3d_probe(struct platform_device *pdev)
 	accel_state->callbacks.pdev = pdev;
 	ret = devm_sensor_hub_register_callback(dev, hsdev, hsdev->usage,
 						&accel_state->callbacks);
-	if (ret < 0)
+	if (ret)
 		return ret;
 
 	return devm_iio_device_register(dev, indio_dev);

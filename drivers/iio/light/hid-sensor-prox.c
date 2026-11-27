@@ -306,7 +306,7 @@ static int hid_prox_probe(struct platform_device *pdev)
 	prox_state->callbacks.pdev = pdev;
 	ret = devm_sensor_hub_register_callback(dev, hsdev, hsdev->usage,
 						&prox_state->callbacks);
-	if (ret < 0)
+	if (ret)
 		return ret;
 
 	return devm_iio_device_register(dev, indio_dev);
