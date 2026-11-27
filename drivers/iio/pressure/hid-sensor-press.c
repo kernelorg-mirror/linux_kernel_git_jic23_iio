@@ -281,10 +281,8 @@ static int hid_press_probe(struct platform_device *pdev)
 
 	ret = devm_hid_sensor_setup_trigger(dev, indio_dev, name,
 					    &press_state->common_attributes);
-	if (ret) {
-		dev_err(&pdev->dev, "trigger setup failed\n");
+	if (ret)
 		return ret;
-	}
 
 	press_state->callbacks.send_event = press_proc_event;
 	press_state->callbacks.capture_sample = press_capture_sample;
@@ -292,10 +290,8 @@ static int hid_press_probe(struct platform_device *pdev)
 	ret = devm_sensor_hub_register_callback(dev, hsdev,
 						HID_USAGE_SENSOR_PRESSURE,
 						&press_state->callbacks);
-	if (ret < 0) {
-		dev_err(&pdev->dev, "callback reg failed\n");
+	if (ret < 0)
 		return ret;
-	}
 
 	return devm_iio_device_register(dev, indio_dev);
 }

@@ -346,10 +346,8 @@ static int hid_incl_3d_probe(struct platform_device *pdev)
 
 	ret = devm_hid_sensor_setup_trigger(dev, indio_dev, name,
 					    &incl_state->common_attributes);
-	if (ret) {
-		dev_err(&pdev->dev, "trigger setup failed\n");
+	if (ret)
 		return ret;
-	}
 
 	incl_state->callbacks.send_event = incl_3d_proc_event;
 	incl_state->callbacks.capture_sample = incl_3d_capture_sample;
@@ -357,10 +355,8 @@ static int hid_incl_3d_probe(struct platform_device *pdev)
 	ret = devm_sensor_hub_register_callback(dev, hsdev,
 						HID_USAGE_SENSOR_INCLINOMETER_3D,
 						&incl_state->callbacks);
-	if (ret) {
-		dev_err(&pdev->dev, "callback reg failed\n");
+	if (ret)
 		return ret;
-	}
 
 	return devm_iio_device_register(dev, indio_dev);
 }
