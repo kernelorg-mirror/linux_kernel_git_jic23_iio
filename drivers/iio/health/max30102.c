@@ -264,6 +264,11 @@ static int max30102_read_measurement(struct max30102_data *data,
 					    measurements *
 					    MAX30102_REG_FIFO_DATA_BYTES,
 					    buffer);
+	if (ret < 0)
+		return ret;
+
+	if (ret != measurements * MAX30102_REG_FIFO_DATA_BYTES)
+		return -EINVAL;
 
 	switch (measurements) {
 	case 3:
@@ -279,8 +284,7 @@ static int max30102_read_measurement(struct max30102_data *data,
 		return -EINVAL;
 	}
 
-	return (ret == measurements * MAX30102_REG_FIFO_DATA_BYTES) ?
-	       0 : -EINVAL;
+	return 0;
 }
 
 static irqreturn_t max30102_interrupt_handler(int irq, void *private)
