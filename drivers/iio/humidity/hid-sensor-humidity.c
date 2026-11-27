@@ -210,7 +210,7 @@ static int hid_humidity_probe(struct platform_device *pdev)
 					humidity_sensitivity_addresses,
 					ARRAY_SIZE(humidity_sensitivity_addresses));
 	if (ret)
-		return ret;
+		return dev_err_probe(dev, ret, "failed to setup common attributes\n");
 
 	humid_chans = devm_kmemdup(&pdev->dev, humidity_channels,
 				   sizeof(humidity_channels), GFP_KERNEL);
@@ -220,7 +220,7 @@ static int hid_humidity_probe(struct platform_device *pdev)
 	ret = humidity_parse_report(pdev, hsdev, humid_chans,
 				    HID_USAGE_SENSOR_HUMIDITY, humid_st);
 	if (ret)
-		return ret;
+		return dev_err_probe(dev, ret, "failed to setup attributes\n");
 
 	indio_dev->channels = humid_chans;
 	indio_dev->num_channels = ARRAY_SIZE(humidity_channels);

@@ -207,7 +207,7 @@ static int hid_temperature_probe(struct platform_device *pdev)
 					temperature_sensitivity_addresses,
 					ARRAY_SIZE(temperature_sensitivity_addresses));
 	if (ret)
-		return ret;
+		return dev_err_probe(dev, ret, "failed to setup common attributes\n");
 
 	temp_chans = devm_kmemdup(&pdev->dev, temperature_channels,
 				  sizeof(temperature_channels), GFP_KERNEL);
@@ -217,7 +217,7 @@ static int hid_temperature_probe(struct platform_device *pdev)
 	ret = temperature_parse_report(pdev, hsdev, temp_chans,
 				       HID_USAGE_SENSOR_TEMPERATURE, temp_st);
 	if (ret)
-		return ret;
+		return dev_err_probe(dev, ret, "failed to setup attributes\n");
 
 	indio_dev->channels = temp_chans;
 	indio_dev->num_channels = ARRAY_SIZE(temperature_channels);
