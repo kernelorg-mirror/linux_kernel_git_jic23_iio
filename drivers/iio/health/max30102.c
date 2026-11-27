@@ -235,20 +235,17 @@ static const struct iio_buffer_setup_ops max30102_buffer_setup_ops = {
 	.predisable = max30102_buffer_predisable,
 };
 
-static inline int max30102_fifo_count(struct max30102_data *data)
+static inline bool max30102_fifo_ready(struct max30102_data *data)
 {
 	unsigned int val;
 	int ret;
 
 	ret = regmap_read(data->regmap, MAX30102_REG_INT_STATUS, &val);
 	if (ret)
-		return ret;
+		return false;
 
 	/* FIFO has one sample slot left */
-	if (val & MAX30102_REG_INT_STATUS_FIFO_RDY)
-		return 1;
-
-	return 0;
+	return val & MAX30102_REG_INT_STATUS_FIFO_RDY;
 }
 
 #define MAX30102_COPY_DATA(i) \
@@ -291,10 +288,9 @@ static irqreturn_t max30102_interrupt_handler(int irq, void *private)
 	struct iio_dev *indio_dev = private;
 	struct max30102_data *data = iio_priv(indio_dev);
 	unsigned int measurements;
-	int ret, cnt;
+	int ret;
 
-	cnt = max30102_fifo_count(data);
-	if (cnt <= 0)
+	if (!max30102_fifo_ready(data))
 		return IRQ_HANDLED;
 
 	measurements = bitmap_weight(indio_dev->active_scan_mask,
@@ -302,14 +298,13 @@ static irqreturn_t max30102_interrupt_handler(int irq, void *private)
 
 	mutex_lock(&data->lock);
 
-	while (cnt || (cnt = max30102_fifo_count(data)) > 0) {
+	do {
 		ret = max30102_read_measurement(data, measurements);
 		if (ret)
 			break;
 
 		iio_push_to_buffers(data->indio_dev, data->processed_buffer);
-		cnt--;
-	}
+	} while (max30102_fifo_ready(data));
 
 	mutex_unlock(&data->lock);
 
