@@ -287,10 +287,8 @@ static int hid_hinge_probe(struct platform_device *pdev)
 						 &st->common_attributes,
 						 hinge_sensitivity_addresses,
 						 ARRAY_SIZE(hinge_sensitivity_addresses));
-	if (ret) {
-		dev_err(&pdev->dev, "failed to setup common attributes\n");
-		return ret;
-	}
+	if (ret)
+		return dev_err_probe(dev, ret, "failed to setup common attributes\n");
 
 	indio_dev->num_channels = ARRAY_SIZE(hinge_channels);
 	indio_dev->channels = devm_kmemdup(&pdev->dev, hinge_channels,
@@ -301,10 +299,8 @@ static int hid_hinge_probe(struct platform_device *pdev)
 	ret = hinge_parse_report(pdev, hsdev,
 				 (struct iio_chan_spec *)indio_dev->channels,
 				 hsdev->usage, st);
-	if (ret) {
-		dev_err(&pdev->dev, "failed to setup attributes\n");
-		return ret;
-	}
+	if (ret)
+		return dev_err_probe(dev, ret, "failed to setup attributes\n");
 
 	indio_dev->info = &hinge_info;
 	indio_dev->name = "hinge";

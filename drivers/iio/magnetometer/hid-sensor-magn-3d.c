@@ -473,10 +473,9 @@ static int hid_magn_3d_probe(struct platform_device *pdev)
 				&magn_state->magn_flux_attributes,
 				magn_3d_sensitivity_addresses,
 				ARRAY_SIZE(magn_3d_sensitivity_addresses));
-	if (ret) {
-		dev_err(&pdev->dev, "failed to setup common attributes\n");
-		return ret;
-	}
+	if (ret)
+		return dev_err_probe(dev, ret, "failed to setup common attributes\n");
+
 	magn_state->rot_attributes = magn_state->magn_flux_attributes;
 	/* sensitivity of rot_attribute is not the same as magn_flux_attributes */
 	magn_state->rot_attributes.sensitivity.index = -1;
@@ -484,10 +483,8 @@ static int hid_magn_3d_probe(struct platform_device *pdev)
 	ret = magn_3d_parse_report(pdev, hsdev,
 				   &channels, &chan_count,
 				   HID_USAGE_SENSOR_COMPASS_3D, magn_state);
-	if (ret) {
-		dev_err(&pdev->dev, "failed to parse report\n");
-		return ret;
-	}
+	if (ret)
+		return dev_err_probe(dev, ret, "failed to setup attributes\n");
 
 	indio_dev->channels = channels;
 	indio_dev->num_channels = chan_count;
